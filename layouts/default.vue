@@ -1,20 +1,28 @@
 <template>
-    <div>
+    <div class="page-wrap">
+        <not-logged-block/>
         <site-header/>
         <current-pairs/>
         <nuxt class="content"/>
+        <site-footer/>
     </div>
 </template>
 <script>
 
 import SiteHeader from '~/components/SiteHeader';
-import CurrentPairs from '~/components/CurrentPairs';
+import CurrentPairs from '~/components/CurrentLessons';
+import NotLoggedBlock from '~/components/NotLoggedBlock';
+import SiteFooter from '~/components/SiteFooter';
 
 export default {
-    components: {
-        CurrentPairs,
-        SiteHeader },
     name: 'DefaultLayout',
+    components: {
+        SiteFooter,
+        NotLoggedBlock,
+        CurrentPairs,
+        SiteHeader,
+    },
+
 };
 </script>
 <style lang="scss">
@@ -23,9 +31,14 @@ export default {
     html {
         font-family: SourceSansPro, sans-serif;
         font-size: 14px;
+        margin-bottom: -100px;
     }
 
     .content {
         background: white;
+    }
+
+    .page-wrap {
+
     }
 </style>

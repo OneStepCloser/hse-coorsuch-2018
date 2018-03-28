@@ -56,7 +56,7 @@ export default {
             text-transform: uppercase;
             text-decoration: none;
             transition: background-color, .5s;
-            font-weight: 700;
+            font-weight: 500;
             letter-spacing: 0.1em;
 
             &:hover {
