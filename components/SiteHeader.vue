@@ -77,7 +77,7 @@ export default {
             border-radius: 50%;
             width: 45px;
             height: 45px;
-            color: $dark-color;
+            color: $text-color-light;
             text-align: center;
             line-height: 45px;
             font-family: Raleway, sans-serif;

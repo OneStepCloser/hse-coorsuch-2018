@@ -1,15 +1,19 @@
 <template>
     <div>
         <site-header/>
+        <current-pairs/>
         <nuxt class="content"/>
     </div>
 </template>
 <script>
 
 import SiteHeader from '~/components/SiteHeader';
+import CurrentPairs from '~/components/CurrentPairs';
 
 export default {
-    components: { SiteHeader },
+    components: {
+        CurrentPairs,
+        SiteHeader },
     name: 'DefaultLayout',
 };
 </script>
