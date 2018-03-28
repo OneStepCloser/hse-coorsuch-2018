@@ -1,0 +1,11 @@
+@import '~@/assets/style/_mixins.scss';
+
+$family: 'SourceSansPro';
+$family-url: '~@/assets/fonts/SourceSansPro/SourceSansPro-';
+
+@include init-font($family, $family-url, 'ExtraLight', 100, null, 'otf')
+@include init-font($family, $family-url, 'Light', 300, null, 'otf')
+@include init-font($family, $family-url, 'Regular', 400, null, 'otf')
+@include init-font($family, $family-url, 'Semibold', 500, null, 'otf')
+@include init-font($family, $family-url, 'Bold', 700, null, 'otf')
+@include init-font($family, $family-url, 'Black', 900, null, 'otf')

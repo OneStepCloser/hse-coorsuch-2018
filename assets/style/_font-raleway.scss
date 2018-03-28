@@ -1,0 +1,11 @@
+@import '~@/assets/style/_mixins.scss';
+
+$family: 'Raleway';
+$family-url: '~@/assets/fonts/Raleway/Raleway-';
+
+@include init-font($family, $family-url, 'Thin', 100, null, 'ttf')
+@include init-font($family, $family-url, 'Light', 300, null, 'ttf')
+@include init-font($family, $family-url, 'Regular', 400, null, 'ttf')
+@include init-font($family, $family-url, 'Medium', 500, null, 'ttf')
+@include init-font($family, $family-url, 'Bold', 700, null, 'ttf')
+@include init-font($family, $family-url, 'Black', 900, null, 'ttf')
