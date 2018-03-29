@@ -32,10 +32,6 @@ module.exports = {
     },
     plugins: [
         {
-            src: '@/nuxt_plugins/NuxtClientInit.js',
-            ssr: false,
-        },
-        {
             src: '@/nuxt_plugins/ElementUI.js',
         },
     ],

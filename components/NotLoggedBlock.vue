@@ -46,12 +46,13 @@ export default {
         }
 
         .button {
-            padding: 8px 15px;
+            padding: 10px 15px;
             border-radius: 2px;
             border: 1px solid $text-color-light;
             background-color: transparent;
             color: $text-color-light;
             transition: background-color, .5s;
+            outline: none;
 
             &:hover {
                 background-color: $light-very-transparent-color;
@@ -63,7 +64,7 @@ export default {
             height: 15px;
             position: absolute;
             top: 20px;
-            right: calc(15% - 20px);
+            right: calc(15% - 23px);
         }
     }
 </style>

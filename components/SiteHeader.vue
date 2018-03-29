@@ -1,6 +1,9 @@
 <template>
     <div class="site-header">
-        <h1 class="name">Курсач</h1>
+        <div class="title-container">
+            <img src="/img/logo2.svg">
+            <h1 class="name">Ко второй</h1>
+        </div>
         <div class="container">
             <nuxt-link class="link"
                        to="/"
@@ -33,14 +36,25 @@ export default {
     padding: 0 15%;
     position: relative;
 
-    .name {
-        font-family: Raleway, sans-serif;
-        color: $dark-color;
-        margin: 0;
-        font-size: 35px;
-        font-weight: 900;
-        line-height: 55px;
+    .title-container {
         float: left;
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        img {
+            width: 45px;
+            height: 45px;
+        }
+
+        .name {
+            font-family: Raleway, sans-serif;
+            color: $dark-color;
+            margin: 0 0 0 10px;
+            font-size: 35px;
+            font-weight: 900;
+            //line-height: 55px;
+        }
     }
 
     .container {
