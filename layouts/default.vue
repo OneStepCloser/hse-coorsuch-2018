@@ -16,13 +16,23 @@ import SiteFooter from '~/components/SiteFooter';
 
 export default {
     name: 'DefaultLayout',
+
+    created() {
+        console.log('STORE', this.$store);
+        this.$store.dispatch('loadBuildings')
+            .then(() => {
+                console.log('OK');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    },
     components: {
         SiteFooter,
         NotLoggedBlock,
         CurrentPairs,
         SiteHeader,
     },
-
 };
 </script>
 <style lang="scss">

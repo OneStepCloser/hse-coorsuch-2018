@@ -12,6 +12,10 @@
                     :value="building.buildingOid"
                     :label="building.address"/>
             </el-select>
+            <el-date-picker
+                v-model="date"
+                type="date"
+                placeholder="Pick a day"/>
             <el-select v-model="lessonNumber"
                        placeholder="Номер пары">
                 <el-option
@@ -26,18 +30,16 @@
 </template>
 
 <script>
-import { getRequest } from '@/utils';
-
-const buildingsUrl = 'http://ruz.hse.ru/ruzservice.svc/buildings';
+import { mapGetters } from '~/node_modules/vuex';
 
 export default {
     name: 'Freerooms',
     data() {
         return {
             buildingId: '',
-            lessonNumber: 4,
-            buildings: [],
-            resultIsLoaded: true,
+            lessonNumber: '',
+            date: '',
+            // resultIsLoaded: true,
             lessons: [
                 { label: '1 пара (9:00 - 10:20)', startHour: 9, startMinute: 0, endHour: 10, endMinute: 20 },
                 { label: '2 пара (10:30 - 11:50)', startHour: 10, startMinute: 30, endHour: 11, endMinute: 50 },
@@ -52,8 +54,9 @@ export default {
         };
     },
     computed: {
-
-
+        ...mapGetters({
+            buildings: 'getBuildings',
+        }),
     },
     methods: {
         getFilteredFreeRooms() {
@@ -62,7 +65,9 @@ export default {
 
         currentPair() {
             const now = new Date();
-            if (now.getDay() === 7) { return 1; }
+            if (now.getDay() === 7) {
+                return 1;
+            }
 
             let res = 1;
 
@@ -88,44 +93,28 @@ export default {
         },
     },
     created() {
+        this.date = new Date();
         this.lessonNumber = this.currentPair();
-        this.resultIsLoaded = false;
-        let answer = null;
-
-        getRequest(buildingsUrl)
-            .then((response) => {
-                answer = response.data.query.results.json.json;
-            })
-            .then(() => {
-                answer = answer.filter(item => !(
-                    item.address === '' ||
-                    !item.address ||
-                    item.address.includes('Пермь') ||
-                    item.address.includes('Санкт-Петербург') ||
-                    item.address.includes('Нижний Новгород') ||
-                    item.address === 'Москва'
-                    // this.getAuditoriums(item['buildingOid']) < 7
-                ));
-            })
-            .then(() => {
-                this.buildings = answer;
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-
-        // console.log(now.getDay(), now.getHours(), now.getMinutes());
+        // this.resultIsLoaded = false;
     },
 };
 </script>
 
 <style lang="scss">
+    @import '~@/assets/style/_colors.scss';
+
     .el-select-dropdown {
         width: 0;
     }
+
     .el-select-dropdown__item {
         height: unset;
+    }
+
+    .today > div > span {
+        background-color: $dark-transparent-color;
+        border-radius: 50%;
+        color: $text-color-light !important;
     }
 </style>
 
@@ -137,14 +126,17 @@ export default {
 
         .container {
             display: flex;
+            flex-wrap: wrap;
             margin-left: -20px;
 
             & > * {
                 margin-left: 20px;
+                margin-bottom: 15px;
             }
 
             .select {
                 flex-grow: 1;
+                flex-basis: 100%;
             }
 
             .go-button {
@@ -155,7 +147,7 @@ export default {
                 background-color: $accent-color;
                 color: $dark-color;
                 transition: background-color, .5s;
-                outline: none;
+                font-weight: 700;
 
                 &:hover {
                     background-color: $accent-color-light;
@@ -168,6 +160,7 @@ export default {
             }
         }
     }
+
     .option-content {
         padding: 10px;
         white-space: normal;
