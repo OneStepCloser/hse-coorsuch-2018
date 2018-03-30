@@ -4,7 +4,7 @@
         <site-header/>
         <current-pairs/>
         <nuxt class="content"/>
-        <site-footer/>
+        <!--<site-footer/>-->
     </div>
 </template>
 <script>

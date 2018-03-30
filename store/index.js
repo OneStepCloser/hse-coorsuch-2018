@@ -1,6 +1,6 @@
 import Vue from '~/node_modules/vue';
 import Vuex from '~/node_modules/vuex';
-import { getRequest } from '~/utils';
+import { getRequest, getFreeRooms } from '~/utils';
 
 Vue.use(Vuex);
 
@@ -47,13 +47,23 @@ const store = () => new Vuex.Store({
                     commit('buildingsLoaded', answer);
                 });
         },
-        loadFreeRooms({ commit }) {
-
-        }
+        loadFreeRooms({ commit }, { date, buildingId, lessonNumber }) {
+            console.log('INSIDE ACTION', date, buildingId, lessonNumber)
+            getFreeRooms(date, buildingId, lessonNumber)
+                .then((response) => {
+                    commit('freeRoomsLoaded', response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
     },
     mutations: {
         buildingsLoaded(state, buildings) {
             state.buildings = buildings;
+        },
+        freeRoomsLoaded(state, freeRooms) {
+            state.freeRooms = freeRooms;
         },
     },
 });

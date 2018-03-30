@@ -4,18 +4,23 @@
             <el-select v-model="buildingId"
                        placeholder="Введите или выберите адрес корпуса"
                        class="select"
+                       :class="{ 'select_skipped': !buildingIsChosen }"
                        filterable
-                       clearable>
+                       clearable
+                       @focus="buildingIsInputing">
                 <el-option
                     v-for="building in buildings"
                     :key="building.buildingOid"
                     :value="building.buildingOid"
                     :label="building.address"/>
             </el-select>
+            <div class="error centered-text"
+                 :class="{ 'error_visible': !buildingIsChosen }">Вы забыли ввести корпус!</div>
             <el-date-picker
                 v-model="date"
                 type="date"
-                placeholder="Pick a day"/>
+                placeholder="Pick a day"
+                format="dd.MM.yyyy"/>
             <el-select v-model="lessonNumber"
                        placeholder="Номер пары">
                 <el-option
@@ -27,21 +32,36 @@
             <button class="go-button clickable"
                     @click="showFreeRooms">Стартуем!</button>
         </div>
+        <div class="spinner"
+             v-if="loading">
+            <looping-rhombuses-spinner
+                :animation-duration="2500"
+                :rhombus-size="15"
+                color="#836a9b"
+            />
+            <span>Немного терпения...</span>
+        </div>
+        <free-rooms-table :rooms="freeRooms"
+                          v-if="freeRooms.length > 0"/>
     </div>
 </template>
 
 <script>
 import { mapGetters } from '~/node_modules/vuex';
-import { getFreeRooms, addLeadingZeros } from '~/utils';
+import { addLeadingZeros } from '~/utils';
+import FreeRoomsTable from '~/components/FreeRoomsTable';
+import { LoopingRhombusesSpinner } from 'epic-spinners';
 
 export default {
+
     name: 'Freerooms',
     data() {
         return {
             buildingId: '',
+            buildingIsChosen: true,
             lessonNumber: '',
             date: '',
-            freeRooms: [],
+            loading: false,
             lessons: [
                 { label: '1 пара (9:00 - 10:20)', startHour: 9, startMinute: 0, endHour: 10, endMinute: 20 },
                 { label: '2 пара (10:30 - 11:50)', startHour: 10, startMinute: 30, endHour: 11, endMinute: 50 },
@@ -58,10 +78,8 @@ export default {
     computed: {
         ...mapGetters({
             buildings: 'getBuildings',
+            freeRooms: 'freeRooms',
         }),
-        // dateForRequest() {
-        // re
-        // }
         dateForRequest() {
             const year = this.date.getFullYear();
             const month = addLeadingZeros(this.date.getMonth() + 1, 2);
@@ -71,13 +89,16 @@ export default {
     },
     methods: {
         showFreeRooms() {
-            getFreeRooms(this.dateForRequest, this.buildingId, this.lessonNumber)
-                .then((response) => {
-                    this.freeRooms = response;
-                    console.log('OK', this.freeRooms);
-                })
-                .catch((error) => {
-                    console.log(error);
+            if (this.buildingId === '') {
+                this.buildingIsChosen = false;
+                return;
+            }
+            this.loading = true;
+            console.log('LOADING1', this.loading);
+            this.$store.dispatch('loadFreeRooms', { date: this.dateForRequest, buildingId: this.buildingId, lessonNumber: this.lessonNumber })
+                .then(() => {
+                    this.loading = false; // Вот это исполняется сразу, почему?
+                    console.log('LOADING2', this.loading);
                 });
         },
 
@@ -109,6 +130,9 @@ export default {
 
             return start <= targetMoment && targetMoment <= end;
         },
+        buildingIsInputing() {
+            this.buildingIsChosen = true;
+        },
 
     },
     created() {
@@ -116,11 +140,13 @@ export default {
         this.lessonNumber = this.currentPair();
         // this.resultIsLoaded = false;
     },
+    components: { FreeRoomsTable, LoopingRhombusesSpinner },
 };
 </script>
 
 <style lang="scss">
     @import '~@/assets/style/_colors.scss';
+
 
     .el-select-dropdown {
         width: 0;
@@ -156,6 +182,10 @@ export default {
             .select {
                 flex-grow: 1;
                 flex-basis: 100%;
+
+                &_skipped {
+                    margin-bottom: 2px;
+                }
             }
 
             .go-button {
@@ -176,6 +206,26 @@ export default {
                     background-color: $accent-color-light;
                     box-shadow: 0 0 10px $accent-color-light;
                 }
+            }
+
+            .error {
+                flex-basis: 100%;
+                color: red;
+                display: none;
+
+                &_visible {
+                    display: unset;
+                }
+            }
+        }
+
+        .spinner {
+            display: flex;
+            justify-content: center;
+
+            span {
+                margin-left: 10px;
+                font-size: 1.3em;
             }
         }
     }
