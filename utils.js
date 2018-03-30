@@ -72,4 +72,8 @@ function addLeadingZeros(number, size) {
     return res.substr(res.length - size);
 }
 
-export { getRequest, getFreeRooms, addLeadingZeros };
+function checkEmail(email) {
+    return /@edu\.hse\.ru$/.test(email);
+}
+
+export { getRequest, getFreeRooms, addLeadingZeros, checkEmail };

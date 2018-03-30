@@ -2,16 +2,35 @@
     <div class="not-logged centered-text">
         <div class="text">Чтобы наш сервис был ещё удобнее, введите адрес корпоративной почты</div>
         <input class="input"
-               placeholder="slzakharov@edu.hse.ru">
-        <button class="button clickable">Готово!</button>
+               placeholder="slzakharov@edu.hse.ru"
+        v-model="email">
+        <button class="button clickable"
+                @click="saveEmail">Готово!</button>
         <img src="/img/close.svg"
              class="close clickable">
     </div>
 </template>
 
 <script>
+import  { checkEmail } from '~/utils';
+
 export default {
     name: 'NotLoggedBlock',
+    data() {
+        return {
+            email: '',
+        };
+    },
+    methods: {
+        saveEmail() {
+            if (process.browser) {
+                if (this.checkEmail(this.email)) {
+                    window.localStorage.setItem('kovtoroiEmail', this.email);
+                }
+            }
+        },
+
+    },
 };
 </script>
 

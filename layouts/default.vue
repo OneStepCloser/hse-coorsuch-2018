@@ -18,7 +18,7 @@ export default {
     name: 'DefaultLayout',
 
     created() {
-        console.log('STORE', this.$store);
+
         this.$store.dispatch('loadBuildings')
             .then(() => {
                 console.log('OK');

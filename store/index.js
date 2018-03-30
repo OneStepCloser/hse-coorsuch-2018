@@ -48,8 +48,8 @@ const store = () => new Vuex.Store({
                 });
         },
         loadFreeRooms({ commit }, { date, buildingId, lessonNumber }) {
-            console.log('INSIDE ACTION', date, buildingId, lessonNumber)
-            getFreeRooms(date, buildingId, lessonNumber)
+
+            return getFreeRooms(date, buildingId, lessonNumber)
                 .then((response) => {
                     commit('freeRoomsLoaded', response);
                 })

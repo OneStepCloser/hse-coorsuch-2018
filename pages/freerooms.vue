@@ -222,6 +222,7 @@ export default {
         .spinner {
             display: flex;
             justify-content: center;
+            margin-top: 40px;
 
             span {
                 margin-left: 10px;
