@@ -24,13 +24,15 @@
                     :value="i + 1"
                     :label="lesson.label"/>
             </el-select>
-            <button class="go-button clickable">Стартуем!</button>
+            <button class="go-button clickable"
+                    @click="showFreeRooms">Стартуем!</button>
         </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from '~/node_modules/vuex';
+import { getFreeRooms, addLeadingZeros } from '~/utils';
 
 export default {
     name: 'Freerooms',
@@ -39,7 +41,7 @@ export default {
             buildingId: '',
             lessonNumber: '',
             date: '',
-            // resultIsLoaded: true,
+            freeRooms: [],
             lessons: [
                 { label: '1 пара (9:00 - 10:20)', startHour: 9, startMinute: 0, endHour: 10, endMinute: 20 },
                 { label: '2 пара (10:30 - 11:50)', startHour: 10, startMinute: 30, endHour: 11, endMinute: 50 },
@@ -57,10 +59,26 @@ export default {
         ...mapGetters({
             buildings: 'getBuildings',
         }),
+        // dateForRequest() {
+        // re
+        // }
+        dateForRequest() {
+            const year = this.date.getFullYear();
+            const month = addLeadingZeros(this.date.getMonth() + 1, 2);
+            const date = addLeadingZeros(this.date.getDate(), 2);
+            return `${year}-${month}-${date}`;
+        },
     },
     methods: {
-        getFilteredFreeRooms() {
-
+        showFreeRooms() {
+            getFreeRooms(this.dateForRequest, this.buildingId, this.lessonNumber)
+                .then((response) => {
+                    this.freeRooms = response;
+                    console.log('OK', this.freeRooms);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
 
         currentPair() {
@@ -91,6 +109,7 @@ export default {
 
             return start <= targetMoment && targetMoment <= end;
         },
+
     },
     created() {
         this.date = new Date();

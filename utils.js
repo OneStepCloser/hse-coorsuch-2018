@@ -67,4 +67,9 @@ function getFreeRooms(date, buildingId, pairNumber) {
         });
 }
 
-export { getRequest, getFreeRooms };
+function addLeadingZeros(number, size) {
+    const res = `${'0'.repeat(size)}${number}`;
+    return res.substr(res.length - size);
+}
+
+export { getRequest, getFreeRooms, addLeadingZeros };

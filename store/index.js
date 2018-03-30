@@ -10,9 +10,17 @@ const store = () => new Vuex.Store({
 
     state: {
         buildings: [],
+        neededBuilding: -1,
+        neededDate: -1,
+        neededPair: -1,
+        freeRooms: [],
     },
     getters: {
         getBuildings: state => state.buildings,
+        neededBuilding: state => state.neededBuilding,
+        neededDate: state => state.neededDate,
+        neededPair: state => state.neededPair,
+        freeRooms: state => state.freeRooms,
     },
     actions: {
         loadBuildings({ commit }) {
@@ -39,6 +47,9 @@ const store = () => new Vuex.Store({
                     commit('buildingsLoaded', answer);
                 });
         },
+        loadFreeRooms({ commit }) {
+
+        }
     },
     mutations: {
         buildingsLoaded(state, buildings) {
