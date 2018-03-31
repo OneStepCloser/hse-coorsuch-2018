@@ -17,7 +17,7 @@ const store = () => new Vuex.Store({
         neededPair: -1,
         freeRooms: -1,
         email: -1,
-        personalSchedule: [],
+        personalSchedule: -1,
     },
     getters: {
         getBuildings: state => state.buildings,

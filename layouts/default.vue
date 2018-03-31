@@ -31,7 +31,7 @@ export default {
         // this.$store.dispatch('loadEmailFromLocalStorage');
 
         if (this.$store.getters.email !== -1) {
-            const today = new Date(2018, 3, 8); // TODO
+            const today = new Date(2018, 3, 20); // TODO
             const monday = getMonday(today);
             const sunday = getSunday(today);
             console.log('MONDAY SUNDAY', monday, sunday);
