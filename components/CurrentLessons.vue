@@ -2,14 +2,27 @@
     <div>
         <div v-if="personalSchedule !== -1"
              class="current-pairs">
+
             <div class="label">сейчас у вас:</div>
-            <span class="info info_important">{{ `${nearestLessons.current.kindOfWork}, ${nearestLessons.current.discipline} ` }}</span>
-            <span class="info">в ауд </span>
-            <span class="info info_important">{{ `${nearestLessons.current.auditorium}.` }}</span>
+            <div class="next-container">
+                <span class="info time">{{ `${nearestLessons.current.beginLesson}` }}</span>
+                <div>
+                    <span class="info info_important">{{ `${nearestLessons.current.kindOfWork}, ${nearestLessons.current.discipline} ` }}</span>
+                    <span class="info">в ауд </span>
+                    <span class="info info_important">{{ `${nearestLessons.current.auditorium}.` }}</span>
+                </div>
+            </div>
+
             <div class="label">следующая пара:</div>
-            <span class="info info_important">{{ `${nearestLessons.next.kindOfWork}, ${nearestLessons.next.discipline} ` }}</span>
-            <span class="info">в ауд </span>
-            <span class="info info_important">{{ `${nearestLessons.next.auditorium}.` }}</span>
+            <div class="next-container">
+                <span class="info time">{{ `${nearestLessons.next.beginLesson}` }}</span>
+                <div>
+                    <span class="info info_important">{{ `${nearestLessons.next.kindOfWork}, ${nearestLessons.next.discipline} ` }}</span>
+                    <span class="info">в ауд </span>
+                    <span class="info info_important">{{ `${nearestLessons.next.auditorium}.` }}</span>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -75,6 +88,7 @@ export default {
 
         .label {
             color: $light-transparent-color;
+            margin-bottom: 5px;
 
             &:not(:first-child) {
                 margin-top: 10px;
@@ -88,6 +102,25 @@ export default {
 
             &_important {
                 font-weight: 500;
+            }
+        }
+
+        .time {
+            background-color: $accent-color-lightest;
+            color: $dark-color;
+            margin-right: 7px;
+            font-size: 1.2em;
+            font-weight: 500;
+            border-radius: 5px;
+            padding: 3px;
+        }
+
+        .next-container {
+            display: flex;
+            align-items: baseline;
+
+            & > * {
+                display: block;
             }
         }
     }
