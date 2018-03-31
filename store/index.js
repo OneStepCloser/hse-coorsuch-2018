@@ -18,6 +18,7 @@ const store = () => new Vuex.Store({
         freeRooms: -1,
         email: -1,
         personalSchedule: -1,
+        loading: false,
     },
     getters: {
         getBuildings: state => state.buildings,
@@ -27,6 +28,7 @@ const store = () => new Vuex.Store({
         freeRooms: state => state.freeRooms,
         email: state => state.email,
         personalSchedule: state => state.personalSchedule,
+        loading: state => state.loading,
     },
     actions: {
         loadBuildings({ commit }) {
@@ -54,7 +56,6 @@ const store = () => new Vuex.Store({
                 });
         },
         loadFreeRooms({ commit }, { date, buildingId, lessonNumber }) {
-
             return getFreeRooms(date, buildingId, lessonNumber)
                 .then((response) => {
                     console.log('FREE ROOMS RESPONSE', response);
@@ -73,9 +74,17 @@ const store = () => new Vuex.Store({
         },
         loadPersonalSchedule({ commit, state }, { fromDate, toDate }) {
             console.log('LOAD PERSONAL SCHEDULE', fromDate, toDate, state.email);
+            state.loading = true;
+            console.log('LOADING 1', state.loading);
             return getPersonalSchedule(fromDate, toDate, state.email)
                 .then((response) => {
-                    commit('personalScheduleLoaded', _.groupBy(response.data.query.results.json.json, lesson => lesson.date));
+
+
+                    if (response.data.query.results === null) {
+                        commit('personalScheduleLoaded', {});
+                    } else {
+                        commit('personalScheduleLoaded', _.groupBy(response.data.query.results.json.json, lesson => lesson.date));
+                    }
                 });
         },
     },
@@ -91,6 +100,8 @@ const store = () => new Vuex.Store({
         },
         personalScheduleLoaded(state, schedule) {
             state.personalSchedule = schedule;
+            state.loading = false;
+            console.log('LOADING 2', state.loading);
         },
     },
 });

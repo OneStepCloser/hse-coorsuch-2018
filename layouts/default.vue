@@ -15,6 +15,7 @@ import NotLoggedBlock from '~/components/NotLoggedBlock';
 import SiteFooter from '~/components/SiteFooter';
 
 import { getMonday, getSunday, dateForRequest } from '~/utils';
+import { currentDay } from '~/assets/js/static_data';
 
 
 export default {
@@ -31,7 +32,7 @@ export default {
         // this.$store.dispatch('loadEmailFromLocalStorage');
 
         if (this.$store.getters.email !== -1) {
-            const today = new Date(2018, 3, 20); // TODO
+            const today = new Date(currentDay); // TODO
             const monday = getMonday(today);
             const sunday = getSunday(today);
             console.log('MONDAY SUNDAY', monday, sunday);

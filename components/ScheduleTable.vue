@@ -1,7 +1,8 @@
 <template>
     <div>
         <div v-for="(day, i) in week"
-             :key="i">
+             :key="i"
+             v-if="i !== 6">
             <table class="table centered">
                 <thead>
                     <tr>

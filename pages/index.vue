@@ -1,18 +1,11 @@
 <template>
     <div class="schedule">
-        <!--<div v-for="day in personalSchedule">-->
-        <!--<span>{{ day }}</span>-->
-        <!--<br><br>-->
-        <!--</div>-->
-        <!--<br>-->
-        <!--<br>-->
-        <!--<br>-->
         <h2>Расписание занятий</h2>
 
         <div v-if="personalSchedule !== -1">
             <div class="pages-container centered">
                 <a class="link clickable"
-                   @click="previousWeek">
+                   @click="anotherWeek(false)">
                     <img src="/img/arrow-left.svg"
                          class="arrow-left">
                 Предыдущая&nbsp;неделя</a>
@@ -20,18 +13,10 @@
                     {{ `${addLeadingZeros(monday.getDate())}&nbsp;${monthDict[monday.getMonth()]}&nbsp;${monday.getFullYear()}&nbsp;-
                     ${addLeadingZeros(sunday.getDate())}&nbsp;${monthDict[sunday.getMonth()]}&nbsp;${sunday.getFullYear()}` }}
                 </div>
-                <a class="link clickable">Следующая&nbsp;неделя
+                <a class="link clickable"
+                   @click="anotherWeek(true)">Следующая&nbsp;неделя
                     <img src="/img/arrow-right.svg"
                          class="arrow-right"></a>
-            </div>
-
-            <div class="spinner"
-                 v-if="loading">
-                <looping-rhombuses-spinner
-                    :animation-duration="2500"
-                    :rhombus-size="15"
-                    color="#836a9b"/>
-                <span>Немного терпения...</span>
             </div>
 
             <schedule-table v-if="!loading"
@@ -39,9 +24,17 @@
                             :personal-schedule="isDefault ? personalSchedule : nonDefaultSchedule"/>
 
         </div>
-        <div v-else
+        <div v-else-if="!storeLoading"
              class="no-logged-message centered">
             Для просмотра расписания необходимо ввести корпоративную почту (правый верхний угол).
+        </div>
+        <div class="spinner"
+             v-if="loading || storeLoading">
+            <looping-rhombuses-spinner
+                :animation-duration="2500"
+                :rhombus-size="15"
+                color="#836a9b"/>
+            <span>Немного терпения...</span>
         </div>
     </div>
 </template>
@@ -51,6 +44,7 @@ import { mapGetters } from '~/node_modules/vuex';
 import { getMonday, getWeek, getSunday, dateForRequest, addLeadingZeros, getPersonalSchedule } from '~/utils';
 import ScheduleTable from '~/components/ScheduleTable';
 import { LoopingRhombusesSpinner } from '~/node_modules/epic-spinners';
+import { currentDay } from '~/assets/js/static_data';
 
 export default {
 
@@ -85,6 +79,7 @@ export default {
     computed: {
         ...mapGetters({
             personalSchedule: 'personalSchedule',
+            storeLoading: 'loading',
         }),
     },
     methods: {
@@ -94,9 +89,9 @@ export default {
         addLeadingZeros(number) {
             return addLeadingZeros(number, 2);
         },
-        previousWeek() {
-            this.monday.setHours(-24 * 7);
-            this.sunday.setHours(24 * 7);
+        anotherWeek(isNext) {
+            this.monday.setHours((isNext || -1) * 24 * 7);
+            this.sunday.setHours((isNext || -1) * 24 * 7);
             this.week = getWeek(this.monday);
 
             this.isDefault = false;
@@ -106,7 +101,15 @@ export default {
             this.loading = true;
             getPersonalSchedule(this.dateForRequest(this.monday), this.dateForRequest(this.sunday), this.$store.getters.email)
                 .then((response) => {
-                    this.nonDefaultSchedule = _.groupBy(response.data.query.results.json.json, lesson => lesson.date);
+                    if (response.data.query.results === null) {
+                        this.nonDefaultSchedule = {};
+                    } else {
+                        this.nonDefaultSchedule = _.groupBy(
+                            response.data.query.results.json.json,
+                            lesson => lesson.date
+                        );
+                    }
+
                     this.loading = false;
                     console.log('NOW SCHEDULE: ', this.nonDefaultSchedule);
                 })
@@ -116,7 +119,7 @@ export default {
         },
     },
     created() {
-        this.today = new Date(2018, 3, 20); // TODO
+        this.today = new Date(currentDay); // TODO
         this.monday = getMonday(this.today);
         this.sunday = getSunday(this.today);
         this.week = getWeek(this.monday);
@@ -139,7 +142,7 @@ export default {
 
         h2 {
             padding: 0 20%;
-            color: $accent-color;
+            color: $attention-color;
             font-family: Raleway, sans-serif;
             font-size: 2em;
             font-weight: 700;
@@ -150,6 +153,7 @@ export default {
             width: 60%;
             display: flex;
             justify-content: space-between;
+            align-items: center;
 
             .link {
                 font-size: 1.2em;
