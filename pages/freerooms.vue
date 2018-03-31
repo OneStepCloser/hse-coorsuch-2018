@@ -42,15 +42,19 @@
             <span>Немного терпения...</span>
         </div>
         <free-rooms-table :rooms="freeRooms"
-                          v-if="freeRooms.length > 0"/>
+                          v-if="freeRooms && freeRooms.length > 0 && !loading"/>
+        <div v-else-if="freeRooms === -1 && !loading"
+             class="tip centered-text">Заполните поля выше и нажмите на кнопку "Стартуем!"</div>
+        <div v-else-if="!loading"
+             class="empty-list centered-text">Кажется, свободных аудиторий нет 😭</div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from '~/node_modules/vuex';
-import { addLeadingZeros } from '~/utils';
+import { dateForRequest } from '~/utils';
 import FreeRoomsTable from '~/components/FreeRoomsTable';
-import { LoopingRhombusesSpinner } from 'epic-spinners';
+import { LoopingRhombusesSpinner } from '~/node_modules/epic-spinners';
 
 export default {
 
@@ -80,12 +84,12 @@ export default {
             buildings: 'getBuildings',
             freeRooms: 'freeRooms',
         }),
-        dateForRequest() {
-            const year = this.date.getFullYear();
-            const month = addLeadingZeros(this.date.getMonth() + 1, 2);
-            const date = addLeadingZeros(this.date.getDate(), 2);
-            return `${year}-${month}-${date}`;
-        },
+        // dateForRequest() {
+        //     const year = this.date.getFullYear();
+        //     const month = addLeadingZeros(this.date.getMonth() + 1, 2);
+        //     const date = addLeadingZeros(this.date.getDate(), 2);
+        //     return `${year}-${month}-${date}`;
+        // },
     },
     methods: {
         showFreeRooms() {
@@ -95,7 +99,7 @@ export default {
             }
             this.loading = true;
             console.log('LOADING1', this.loading);
-            this.$store.dispatch('loadFreeRooms', { date: this.dateForRequest, buildingId: this.buildingId, lessonNumber: this.lessonNumber })
+            this.$store.dispatch('loadFreeRooms', { date: dateForRequest(this.date), buildingId: this.buildingId, lessonNumber: this.lessonNumber })
                 .then(() => {
                     this.loading = false; // Вот это исполняется сразу, почему?
                     console.log('LOADING2', this.loading);
@@ -235,6 +239,11 @@ export default {
         padding: 10px;
         white-space: normal;
         line-height: 1.5em;
+    }
+
+    .tip, .empty-list {
+        margin-top: 30px;
+        font-size: 1.3em;
     }
 
 </style>

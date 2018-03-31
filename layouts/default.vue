@@ -14,11 +14,12 @@ import CurrentPairs from '~/components/CurrentLessons';
 import NotLoggedBlock from '~/components/NotLoggedBlock';
 import SiteFooter from '~/components/SiteFooter';
 
+import { getMonday, getSunday, dateForRequest } from '~/utils';
+
+
 export default {
     name: 'DefaultLayout',
-
     created() {
-
         this.$store.dispatch('loadBuildings')
             .then(() => {
                 console.log('OK');
@@ -26,6 +27,19 @@ export default {
             .catch((error) => {
                 console.log(error);
             });
+        this.$store.dispatch('loadEmailFromLocalStorage');
+        // this.$store.dispatch('loadEmailFromLocalStorage');
+
+        if (this.$store.getters.email !== -1) {
+            const monday = getMonday();
+            const sunday = getSunday();
+            console.log('MONDAY', monday, sunday);
+
+            this.$store.dispatch('loadPersonalSchedule', { fromDate: dateForRequest(monday), toDate: dateForRequest(sunday) })
+                .then((response) => {
+                    console.log('SCHEDULE LOADED, RESPONSE:', response);
+                });
+        }
     },
     components: {
         SiteFooter,

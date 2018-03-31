@@ -2,6 +2,8 @@ const axios = require('axios');
 
 const yqlUrl = 'https://query.yahooapis.com/v1/public/yql';
 
+const personalLessonsUrl = 'http://ruz.hse.ru/ruzservice.svc/personlessons';
+
 const lessonsOrder = [
     { begin: '09:00', end: '10:20' },
     { begin: '10:30', end: '11:50' },
@@ -67,6 +69,13 @@ function getFreeRooms(date, buildingId, pairNumber) {
         });
 }
 
+function getPersonalSchedule(fromDate, toDate, email) {
+    return getRequest(personalLessonsUrl, { fromdate: fromDate, todate: toDate, email });
+    // .then((response) => {
+    //     console.log('PERSON LESSONS', response);
+    // });
+}
+
 function addLeadingZeros(number, size) {
     const res = `${'0'.repeat(size)}${number}`;
     return res.substr(res.length - size);
@@ -76,4 +85,50 @@ function checkEmail(email) {
     return /@edu\.hse\.ru$/.test(email);
 }
 
-export { getRequest, getFreeRooms, addLeadingZeros, checkEmail };
+function dateForRequest(initialDate) {
+    const year = initialDate.getFullYear();
+    const month = addLeadingZeros(initialDate.getMonth() + 1, 2);
+    const date = addLeadingZeros(initialDate.getDate(), 2);
+    return `${year}.${month}.${date}`;
+}
+
+function getMonday() {
+    const today = new Date();
+    const day = today.getDay() || 7; // Get current day number, converting Sun. to 7
+    if (day !== 1) {
+        today.setHours(-24 * (day - 1));
+    }
+    return today;
+}
+
+function getSunday() {
+    const today = new Date();
+    const day = today.getDay() || 7; // Get current day number, converting Sun. to 7
+    if (day !== 7) {
+        today.setHours(24 * (7 - day));
+    }
+    return today;
+}
+
+function getWeek(monday) {
+    const week = [];
+    for (let i = 0; i < 7; ++i) {
+        const clone = _.cloneDeep(monday);
+        clone.setHours(24 * i);
+        week.push(clone);
+    }
+    console.log('WEEK', week);
+    return week;
+}
+
+export {
+    getRequest,
+    getFreeRooms,
+    addLeadingZeros,
+    checkEmail,
+    getPersonalSchedule,
+    dateForRequest,
+    getMonday,
+    getSunday,
+    getWeek,
+};

@@ -1,10 +1,12 @@
 import Vue from '~/node_modules/vue';
 import Vuex from '~/node_modules/vuex';
-import { getRequest, getFreeRooms } from '~/utils';
+import { getRequest, getFreeRooms, getPersonalSchedule } from '~/utils';
+import _ from '~/node_modules/lodash';
 
 Vue.use(Vuex);
 
 const buildingsUrl = 'http://ruz.hse.ru/ruzservice.svc/buildings';
+// const personalLessonsUrl = 'http://ruz.hse.ru/ruzservice.svc/personlessons';
 
 const store = () => new Vuex.Store({
 
@@ -13,7 +15,9 @@ const store = () => new Vuex.Store({
         neededBuilding: -1,
         neededDate: -1,
         neededPair: -1,
-        freeRooms: [],
+        freeRooms: -1,
+        email: -1,
+        personalSchedule: [],
     },
     getters: {
         getBuildings: state => state.buildings,
@@ -21,6 +25,8 @@ const store = () => new Vuex.Store({
         neededDate: state => state.neededDate,
         neededPair: state => state.neededPair,
         freeRooms: state => state.freeRooms,
+        email: state => state.email,
+        personalSchedule: state => state.personalSchedule,
     },
     actions: {
         loadBuildings({ commit }) {
@@ -29,7 +35,7 @@ const store = () => new Vuex.Store({
 
             return getRequest(buildingsUrl)
                 .then((response) => {
-                    console.log('lol');
+                    console.log('loooool', response);
                     answer = response.data.query.results.json.json;
                 })
                 .then(() => {
@@ -51,10 +57,25 @@ const store = () => new Vuex.Store({
 
             return getFreeRooms(date, buildingId, lessonNumber)
                 .then((response) => {
+                    console.log('FREE ROOMS RESPONSE', response);
                     commit('freeRoomsLoaded', response);
                 })
                 .catch((error) => {
                     console.log(error);
+                });
+        },
+        loadEmailFromLocalStorage({ commit }) {
+            console.log('INSIDE LOAD EMAIL');
+            if (process.browser && window.localStorage.kovtoroiEmail) {
+                console.log('LOADING EMAIL');
+                commit('emailFromLocalStorageLoaded', window.localStorage.kovtoroiEmail);
+            }
+        },
+        loadPersonalSchedule({ commit, state }, { fromDate, toDate }) {
+            console.log('LOAD PERSONAL SCHEDULE', fromDate, toDate, state.email);
+            return getPersonalSchedule(fromDate, toDate, state.email)
+                .then((response) => {
+                    commit('personalScheduleLoaded', _.groupBy(response.data.query.results.json.json, lesson => lesson.date));
                 });
         },
     },
@@ -64,6 +85,12 @@ const store = () => new Vuex.Store({
         },
         freeRoomsLoaded(state, freeRooms) {
             state.freeRooms = freeRooms;
+        },
+        emailFromLocalStorageLoaded(state, email) {
+            state.email = email;
+        },
+        personalScheduleLoaded(state, schedule) {
+            state.personalSchedule = schedule;
         },
     },
 });
