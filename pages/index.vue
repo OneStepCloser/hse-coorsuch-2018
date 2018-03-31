@@ -11,10 +11,11 @@
 
         <div v-if="personalSchedule !== -1">
             <div class="pages-container centered">
-                <a class="link clickable">
+                <a class="link clickable"
+                   @click="previousWeek">
                     <img src="/img/arrow-left.svg"
-                    class="arrow-left">
-                    Предыдущая&nbsp;неделя</a>
+                         class="arrow-left">
+                Предыдущая&nbsp;неделя</a>
                 <div class="current-week centered-text">
                     {{ `${addLeadingZeros(monday.getDate())}&nbsp;${monthDict[monday.getMonth()]}&nbsp;${monday.getFullYear()}&nbsp;-
                     ${addLeadingZeros(sunday.getDate())}&nbsp;${monthDict[sunday.getMonth()]}&nbsp;${sunday.getFullYear()}` }}
@@ -22,41 +23,24 @@
                 <a class="link clickable">Следующая&nbsp;неделя
                     <img src="/img/arrow-right.svg"
                          class="arrow-right"></a>
-
             </div>
-            <div v-for="(day, i) in week"
-                 :key="i">
-                <table class="table centered">
-                    <thead>
-                        <tr>
-                            <th colspan="3"><b>{{ `${weekDict[i]}` }}</b>
-                            {{ `, ${addLeadingZeros(day.getDate())}.${addLeadingZeros(day.getMonth() + 1)}.${day.getFullYear()}` }}</th>
-                        </tr>
-                    </thead>
 
-                    <tbody>
-                        <tr v-if="!personalSchedule.hasOwnProperty(dateForRequest(day))">
-                            <td class="no-lessons"
-                                colspan="3">Занятий нет</td>
-                        </tr>
-
-                        <tr v-else
-                            v-for="lesson in personalSchedule[dateForRequest(day)]">
-                            <td class="duration">{{ `${lesson.beginLesson} - ${lesson.endLesson}` }}</td>
-                            <td class="auditorium">{{ `ауд. ${lesson.auditorium}` }}</td>
-                            <td class="info">
-                                <div>{{ lesson.kindOfWork }}</div>
-                                <div>{{ lesson.discipline }}</div>
-                                <div>{{ lesson.lecturer }}</div>
-                                <div>{{ lesson.building }}</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="spinner"
+                 v-if="loading">
+                <looping-rhombuses-spinner
+                    :animation-duration="2500"
+                    :rhombus-size="15"
+                    color="#836a9b"/>
+                <span>Немного терпения...</span>
             </div>
+
+            <schedule-table v-if="!loading"
+                            :week="week"
+                            :personal-schedule="isDefault ? personalSchedule : nonDefaultSchedule"/>
+
         </div>
         <div v-else
-            class="no-logged-message centered">
+             class="no-logged-message centered">
             Для просмотра расписания необходимо ввести корпоративную почту (правый верхний угол).
         </div>
     </div>
@@ -64,23 +48,18 @@
 
 <script>
 import { mapGetters } from '~/node_modules/vuex';
-import { getMonday, getWeek, getSunday, dateForRequest, addLeadingZeros } from '~/utils';
+import { getMonday, getWeek, getSunday, dateForRequest, addLeadingZeros, getPersonalSchedule } from '~/utils';
+import ScheduleTable from '~/components/ScheduleTable';
+import { LoopingRhombusesSpinner } from '~/node_modules/epic-spinners';
 
 export default {
+
     name: 'Index',
     layout: 'default',
     data() {
         return {
             week: [],
-            weekDict: [
-                'Понедельник',
-                'Вторник',
-                'Среда',
-                'Четверг',
-                'Пятница',
-                'Суббота',
-                'Воскресенье',
-            ],
+
             monthDict: [
                 'января',
                 'февраля',
@@ -99,7 +78,8 @@ export default {
             monday: -1,
             sunday: -1,
             isDefault: true,
-            nonDefaultSchedule: -1,
+            nonDefaultSchedule: {},
+            loading: false,
         };
     },
     computed: {
@@ -114,6 +94,26 @@ export default {
         addLeadingZeros(number) {
             return addLeadingZeros(number, 2);
         },
+        previousWeek() {
+            this.monday.setHours(-24 * 7);
+            this.sunday.setHours(24 * 7);
+            this.week = getWeek(this.monday);
+
+            this.isDefault = false;
+
+            console.log('BEFORE REQUEST');
+
+            this.loading = true;
+            getPersonalSchedule(this.dateForRequest(this.monday), this.dateForRequest(this.sunday), this.$store.getters.email)
+                .then((response) => {
+                    this.nonDefaultSchedule = _.groupBy(response.data.query.results.json.json, lesson => lesson.date);
+                    this.loading = false;
+                    console.log('NOW SCHEDULE: ', this.nonDefaultSchedule);
+                })
+                .catch((error) => {
+                    console.log('ERROR', error);
+                });
+        },
     },
     created() {
         this.today = new Date(2018, 3, 20); // TODO
@@ -121,6 +121,7 @@ export default {
         this.sunday = getSunday(this.today);
         this.week = getWeek(this.monday);
     },
+    components: { ScheduleTable, LoopingRhombusesSpinner },
 };
 </script>
 
@@ -144,57 +145,6 @@ export default {
             font-weight: 700;
         }
 
-        .table {
-            width: 60%;
-            margin-top: 20px;
-            margin-bottom: 40px;
-            border-spacing: 0;
-            table-layout: fixed;
-            font-size: 1.2em;
-            font-weight: 300;
-
-            th {
-                background-color: $accent-color-lightest;
-                padding: 5px;
-                font-size: 1.2em;
-                color: $dark-color;
-                font-weight: 400;
-            }
-
-            tr {
-
-                //&:nth-child(even) {
-                    //background-color: $accent-color-lightest-extra;
-                //}
-
-                //&:nth-child(odd) {
-                    //background-color: $accent-color-lightest;
-                //}
-            }
-
-            td {
-                padding: 5px;
-                border-bottom: solid 1px $accent-color-light;
-            }
-
-            .duration {
-                width: 13ch;
-                text-align: center;
-            }
-
-            .auditorium {
-                width: 15ch;
-                text-align: center;
-            }
-
-            .info {
-
-            }
-
-            .no-lessons {
-                text-align: center;
-            }
-        }
 
         .pages-container {
             width: 60%;
@@ -221,7 +171,6 @@ export default {
                 }
 
 
-
                 &:hover {
                     color: $text-color-dark;
                     //text-decoration: underline;
@@ -238,6 +187,17 @@ export default {
             font-size: 1.5em;
             margin-top: 20px;
             margin-bottom: 40px;
+        }
+
+        .spinner {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+
+            span {
+                margin-left: 10px;
+                font-size: 1.3em;
+            }
         }
     }
 </style>
