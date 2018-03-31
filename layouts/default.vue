@@ -31,9 +31,10 @@ export default {
         // this.$store.dispatch('loadEmailFromLocalStorage');
 
         if (this.$store.getters.email !== -1) {
-            const monday = getMonday();
-            const sunday = getSunday();
-            console.log('MONDAY', monday, sunday);
+            const today = new Date(2018, 3, 8); // TODO
+            const monday = getMonday(today);
+            const sunday = getSunday(today);
+            console.log('MONDAY SUNDAY', monday, sunday);
 
             this.$store.dispatch('loadPersonalSchedule', { fromDate: dateForRequest(monday), toDate: dateForRequest(sunday) })
                 .then((response) => {

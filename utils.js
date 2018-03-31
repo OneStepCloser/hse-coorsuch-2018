@@ -92,22 +92,22 @@ function dateForRequest(initialDate) {
     return `${year}.${month}.${date}`;
 }
 
-function getMonday() {
-    const today = new Date();
-    const day = today.getDay() || 7; // Get current day number, converting Sun. to 7
+function getMonday(today) {
+    const res = _.cloneDeep(today);
+    const day = res.getDay() || 7; // Get current day number, converting Sun. to 7
     if (day !== 1) {
-        today.setHours(-24 * (day - 1));
+        res.setHours(-24 * (day - 1));
     }
-    return today;
+    return res;
 }
 
-function getSunday() {
-    const today = new Date();
-    const day = today.getDay() || 7; // Get current day number, converting Sun. to 7
+function getSunday(today) {
+    const res = _.cloneDeep(today);
+    const day = res.getDay() || 7; // Get current day number, converting Sun. to 7
     if (day !== 7) {
-        today.setHours(24 * (7 - day));
+        res.setHours(24 * (7 - day));
     }
-    return today;
+    return res;
 }
 
 function getWeek(monday) {

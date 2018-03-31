@@ -50,15 +50,14 @@ export default {
             padding: 10px;
             font-size: 1.2em;
             font-family: Raleway, sans-serif;
-        }
 
+            &:nth-child(even) {
+                background-color: $accent-color-lightest-extra;
+            }
 
-        tr:nth-child(even) {
-            background-color: $accent-color-lightest-extra;
-        }
-
-        tr:nth-child(odd) {
-            background-color: $accent-color-lightest;
+            &:nth-child(odd) {
+                background-color: $accent-color-lightest;
+            }
         }
     }
 
