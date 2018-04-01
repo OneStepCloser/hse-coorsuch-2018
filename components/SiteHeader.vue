@@ -13,22 +13,29 @@
                        to="/freerooms"
                        active-class="link_active"
                        exact>Свободные аудитории</nuxt-link>
-            <el-dropdown trigger="click">
-                <div class="avatar clickable">ЗС
-                    <img class="arrow-down clickable"
-                         src="/img/arrow-down.svg">
-                </div>
 
-                <div class="container"
-                     slot="dropdown">
-                    <input class="input"
-                           placeholder="slzakharov@edu.hse.ru"
-                           v-model="inputedEmail"
-                           @focus="emailIsInputed">
-                    <button class="button clickable"
-                            @click="saveEmail">Готово!</button>
-                </div>
-            </el-dropdown>
+
+            <div class="avatar clickable"
+                 v-popover:login.bottom>ЗС
+                <img class="arrow-down clickable"
+                     src="/img/arrow-down.svg">
+                <popover name="login">
+                    <div class="container">
+                        <input class="input"
+                               placeholder="slzakharov@edu.hse.ru">
+                        <!--v-model="inputedEmail">-->
+                        <!--@focus="emailIsInputed">-->
+                        <button class="button clickable">
+                            <!--@click="saveEmail">-->
+                            Готово!</button>
+                    </div>
+
+                </popover>
+            </div>
+
+
+
+
         </div>
     </div>
 </template>
@@ -40,19 +47,19 @@ export default {
 </script>
 <style lang="scss">
     @import '~@/assets/style/_colors.scss';
-.el-popper {
-    background-color: $attention-color;
-    border: none;
-    padding: 10px;
+.vue-popover {
+    top: 45px !important;
+    width: unset !important;
+    right: -25px !important;
+    left: unset !important;
+    background: $attention-color !important;
+    padding: 15px;
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.5);
 
-
-}
-
-.popper__arrow {
-    border-bottom-color: $attention-color !important;
-    //background-color: red;
-    &:after {
-        border-bottom-color: $attention-color !important;
+    &::before {
+        right: 5px !important;
+        left: unset !important;
+        border-bottom: 6px solid $attention-color !important;
     }
 }
 </style>
@@ -143,14 +150,14 @@ export default {
 }
 
     .container {
-        margin-bottom: 5px;
+
 
         .input {
             padding: 8px 15px;
             outline: none;
             border-radius: 2px;
-            font-size: 1.2em;
-            margin-top: 15px;
+            font-size: 0.8em;
+            //margin-top: 15px;
             margin-right: 15px;
             border: 1px solid transparent;
             transition-property: border, box-shadow;
@@ -171,6 +178,7 @@ export default {
             color: $text-color-light;
             transition: background-color, .5s;
             outline: none;
+            font-size: 0.7em;
 
             &:hover {
                 background-color: $light-very-transparent-color;

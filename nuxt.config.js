@@ -34,6 +34,10 @@ module.exports = {
         {
             src: '@/nuxt_plugins/ElementUI.js',
         },
+        {
+            src: '@/nuxt_plugins/Popover.js',
+            ssr: false,
+        },
     ],
     modules: [
         '@nuxtjs/axios',
