@@ -19,21 +19,21 @@
                  v-popover:login.bottom>ЗС
                 <img class="arrow-down clickable"
                      src="/img/arrow-down.svg">
-                <popover name="login">
-                    <div class="container">
-                        <input class="input"
-                               placeholder="slzakharov@edu.hse.ru">
-                        <!--v-model="inputedEmail">-->
-                        <!--@focus="emailIsInputed">-->
-                        <button class="button clickable">
+                <transition name="show">
+                    <popover name="login">
+                        <div class="container">
+                            <input class="input"
+                                   placeholder="slzakharov@edu.hse.ru">
+                            <!--v-model="inputedEmail">-->
+                            <!--@focus="emailIsInputed">-->
+                            <button class="button clickable">
                             <!--@click="saveEmail">-->
                             Готово!</button>
-                    </div>
+                        </div>
 
-                </popover>
+                    </popover>
+                </transition>
             </div>
-
-
 
 
         </div>
@@ -185,4 +185,24 @@ export default {
             }
         }
     }
+
+    .show-enter-active, .show-leave-active {
+        transition: transform 1s, opacity 0.7s;
+    }
+    .show-enter, .show-leave-to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    /*.show-enter-active, .show-leave-active {*/
+        /*transition: opacity 0.8s;*/
+    /*}*/
+
+    /*.show-enter-to {*/
+        /*opacity: 1;*/
+    /*}*/
+
+    /*.show-enter, .show-leave-to {*/
+        /*opacity: 0;*/
+    /*}*/
 </style>
