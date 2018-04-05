@@ -33,11 +33,11 @@ const store = () => new Vuex.Store({
     actions: {
         loadBuildings({ commit }) {
             let answer = null;
-            console.log('lolkek');
+            // console.log('lolkek');
 
             return getRequest(buildingsUrl)
                 .then((response) => {
-                    console.log('loooool', response);
+                    // console.log('loooool', response);
                     answer = response.data.query.results.json.json;
                 })
                 .then(() => {
@@ -58,7 +58,7 @@ const store = () => new Vuex.Store({
         loadFreeRooms({ commit }, { date, buildingId, lessonNumber }) {
             return getFreeRooms(date, buildingId, lessonNumber)
                 .then((response) => {
-                    console.log('FREE ROOMS RESPONSE', response);
+                    // console.log('FREE ROOMS RESPONSE', response);
                     commit('freeRoomsLoaded', response);
                 })
                 .catch((error) => {
@@ -68,14 +68,14 @@ const store = () => new Vuex.Store({
         loadEmailFromLocalStorage({ commit }) {
             console.log('INSIDE LOAD EMAIL');
             if (process.browser && window.localStorage.kovtoroiEmail) {
-                console.log('LOADING EMAIL');
+                // console.log('LOADING EMAIL');
                 commit('emailFromLocalStorageLoaded', window.localStorage.kovtoroiEmail);
             }
         },
         loadPersonalSchedule({ commit, state }, { fromDate, toDate }) {
-            console.log('LOAD PERSONAL SCHEDULE', fromDate, toDate, state.email);
+            // console.log('LOAD PERSONAL SCHEDULE', fromDate, toDate, state.email);
             state.loading = true;
-            console.log('LOADING 1', state.loading);
+            // console.log('LOADING 1', state.loading);
             return getPersonalSchedule(fromDate, toDate, state.email)
                 .then((response) => {
 
@@ -97,11 +97,12 @@ const store = () => new Vuex.Store({
         },
         emailFromLocalStorageLoaded(state, email) {
             state.email = email;
+            console.log('EMAIL LOADED');
         },
         personalScheduleLoaded(state, schedule) {
             state.personalSchedule = schedule;
             state.loading = false;
-            console.log('LOADING 2', state.loading);
+            // console.log('LOADING 2', state.loading);
         },
     },
 });

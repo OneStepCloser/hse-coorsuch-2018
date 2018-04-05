@@ -1,19 +1,26 @@
 <template>
-    <div class="not-logged centered-text"
-         :class="{ 'not-logged_visible': true }">
-        <div class="text">Чтобы наш сервис был ещё удобнее, введите адрес корпоративной почты</div>
-        <div class="container">
-            <input class="input"
-                   placeholder="slzakharov@edu.hse.ru"
-                   v-model="inputedEmail"
-                   @focus="emailIsInputed">
-            <button class="button clickable"
-                    @click="saveEmail">Готово!</button>
+    <div>
+        <div v-if="!emailExists"
+             class="not-logged centered-text">
+            <div class="text">Чтобы наш сервис был ещё удобнее, введите адрес корпоративной почты</div>
+            <div class="container">
+                <input class="input"
+                       placeholder="slzakharov@edu.hse.ru"
+                       v-model="inputedEmail"
+                       @focus="emailIsInputed"
+                       type="email"
+                       name="email"
+                       autocomplete="on">
+                <button class="button clickable"
+                        @click="saveEmail">Готово!
+                </button>
+            </div>
+            <div class="error"
+                 :class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным
+            </div>
+            <img src="/img/close.svg"
+                 class="close clickable">
         </div>
-        <div class="error"
-             :class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным</div>
-        <img src="/img/close.svg"
-             class="close clickable">
     </div>
 </template>
 
@@ -27,7 +34,6 @@ export default {
         return {
             email: '',
             invalidEmail: false,
-            emailExists: false,
         };
     },
     computed: {
@@ -39,7 +45,10 @@ export default {
                 this.email = value;
             },
         },
-
+        emailExists() {
+            console.log(this.emailFromStore !== -1);
+            return this.emailFromStore !== -1;
+        },
         ...mapGetters({
             emailFromStore: 'email',
         }),
@@ -49,6 +58,9 @@ export default {
             if (process.browser) {
                 if (checkEmail(this.email)) {
                     window.localStorage.setItem('kovtoroiEmail', this.email);
+                    this.$store.dispatch('loadEmailFromLocalStorage');
+
+
                 } else {
                     this.invalidEmail = true;
                 }
@@ -59,12 +71,7 @@ export default {
         },
 
     },
-    beforeCreate() {
 
-        if (this.$store.getters.email !== -1) {
-            this.emailExists = true;
-        }
-    },
 };
 
 </script>
@@ -100,7 +107,6 @@ export default {
                 transition-property: border, box-shadow;
                 transition-duration: .5s, .5s;
 
-
                 &:focus {
                     box-shadow: 0 0 10px $accent-color-light;
                     border: 1px solid $accent-color-light;
@@ -122,7 +128,6 @@ export default {
             }
         }
 
-
         .close {
             width: 15px;
             height: 15px;
@@ -139,7 +144,6 @@ export default {
                 display: unset;
             }
         }
-
 
     }
 

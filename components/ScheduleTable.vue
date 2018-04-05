@@ -7,9 +7,7 @@
                 <thead>
                     <tr>
                         <th colspan="3">
-                            <span class="day-of-week">{{ `${weekDict[i]}` }}</span>
-                            <span>
-                                {{ `, ${addLeadingZeros(day.getDate())}.${addLeadingZeros(day.getMonth() + 1)}.${day.getFullYear()}` }}
+                            <span class="day-of-week">{{ `${weekDict[i]}` }}</span><span>{{ `, ${addLeadingZeros(day.getDate())}.${addLeadingZeros(day.getMonth() + 1)}.${day.getFullYear()}` }}
                             </span>
                         </th>
 

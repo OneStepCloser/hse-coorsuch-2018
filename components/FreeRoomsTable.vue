@@ -51,6 +51,10 @@ export default {
             font-size: 1.2em;
             font-family: Raleway, sans-serif;
 
+
+        }
+
+        tr {
             &:nth-child(even) {
                 background-color: $accent-color-lightest-extra;
             }

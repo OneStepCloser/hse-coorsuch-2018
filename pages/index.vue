@@ -8,10 +8,11 @@
                    @click="anotherWeek(false)">
                     <img src="/img/arrow-left.svg"
                          class="arrow-left">
-                Предыдущая&nbsp;неделя</a>
+                    Предыдущая&nbsp;неделя</a>
                 <div class="current-week centered-text">
                     {{ `${addLeadingZeros(monday.getDate())}&nbsp;${monthDict[monday.getMonth()]}&nbsp;${monday.getFullYear()}&nbsp;-
-                    ${addLeadingZeros(sunday.getDate())}&nbsp;${monthDict[sunday.getMonth()]}&nbsp;${sunday.getFullYear()}` }}
+                    ${addLeadingZeros(sunday.getDate())}&nbsp;${monthDict[sunday.getMonth()]}&nbsp;${sunday.getFullYear()}`
+                    }}
                 </div>
                 <a class="link clickable"
                    @click="anotherWeek(true)">Следующая&nbsp;неделя
@@ -45,6 +46,7 @@ import { getMonday, getWeek, getSunday, dateForRequest, addLeadingZeros, getPers
 import ScheduleTable from '~/components/ScheduleTable';
 import { LoopingRhombusesSpinner } from '~/node_modules/epic-spinners';
 import { currentDay } from '~/assets/js/static_data';
+import _ from '~/node_modules/lodash';
 
 export default {
 
@@ -80,6 +82,7 @@ export default {
         ...mapGetters({
             personalSchedule: 'personalSchedule',
             storeLoading: 'loading',
+            emailFromStore: 'email',
         }),
     },
     methods: {
@@ -96,7 +99,7 @@ export default {
 
             this.isDefault = false;
 
-            console.log('BEFORE REQUEST');
+            // console.log('BEFORE REQUEST');
 
             this.loading = true;
             getPersonalSchedule(this.dateForRequest(this.monday), this.dateForRequest(this.sunday), this.$store.getters.email)
@@ -106,16 +109,52 @@ export default {
                     } else {
                         this.nonDefaultSchedule = _.groupBy(
                             response.data.query.results.json.json,
-                            lesson => lesson.date
+                            lesson => lesson.date,
                         );
                     }
 
                     this.loading = false;
-                    console.log('NOW SCHEDULE: ', this.nonDefaultSchedule);
+                    // console.log('NOW SCHEDULE: ', this.nonDefaultSchedule);
                 })
                 .catch((error) => {
-                    console.log('ERROR', error);
+                    // console.log('ERROR', error);
                 });
+        },
+    },
+    watch: {
+        emailFromStore(newEmail, oldEmail) {
+            // console.log('OLD', oldEmail, 'NEW', newEmail);
+            const today = new Date(currentDay); // TODO
+            const monday = getMonday(today);
+            const sunday = getSunday(today);
+
+            this.loading = true;
+            this.$store.dispatch('loadPersonalSchedule', { fromDate: dateForRequest(monday), toDate: dateForRequest(sunday) })
+                .then((response) => {
+                    if (!this.isDefault) {
+                        //console.log('MONDAY IS', this.monday, 'SUNDAY IS', this.sunday);
+                        getPersonalSchedule(this.dateForRequest(this.monday), this.dateForRequest(this.sunday), this.$store.getters.email)
+                            .then((response) => {
+                                if (response.data.query.results === null) {
+                                    this.nonDefaultSchedule = {};
+                                } else {
+                                    this.nonDefaultSchedule = _.groupBy(
+                                        response.data.query.results.json.json,
+                                        lesson => lesson.date,
+                                    );
+                                }
+
+                                this.loading = false;
+                                // console.log('NOW SCHEDULE: ', this.nonDefaultSchedule);
+                            })
+                            .catch((error) => {
+                                console.log('ERROR', error);
+                            });
+                    }
+                    this.loading = false;
+                });
+
+
         },
     },
     created() {
@@ -148,7 +187,6 @@ export default {
             font-weight: 700;
         }
 
-
         .pages-container {
             width: 60%;
             display: flex;
@@ -173,7 +211,6 @@ export default {
                         margin-left: 10px;
                     }
                 }
-
 
                 &:hover {
                     color: $text-color-dark;

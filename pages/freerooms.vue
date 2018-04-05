@@ -98,11 +98,11 @@ export default {
                 return;
             }
             this.loading = true;
-            console.log('LOADING1', this.loading);
+            // console.log('LOADING1', this.loading);
             this.$store.dispatch('loadFreeRooms', { date: dateForRequest(this.date), buildingId: this.buildingId, lessonNumber: this.lessonNumber })
                 .then(() => {
                     this.loading = false; // Вот это исполняется сразу, почему?
-                    console.log('LOADING2', this.loading);
+                    // console.log('LOADING2', this.loading);
                 });
         },
 
@@ -126,7 +126,7 @@ export default {
         belongsToLesson(lesson, targetMoment) {
             const start = new Date();
             const end = new Date();
-            console.log(lesson.startHour, lesson.startMinute, lesson.endHour, lesson.endMinute);
+            // console.log(lesson.startHour, lesson.startMinute, lesson.endHour, lesson.endMinute);
             start.setHours(lesson.startHour);
             start.setMinutes(lesson.startMinute);
             end.setHours(lesson.endHour);

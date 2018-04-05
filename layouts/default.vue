@@ -35,11 +35,11 @@ export default {
             const today = new Date(currentDay); // TODO
             const monday = getMonday(today);
             const sunday = getSunday(today);
-            console.log('MONDAY SUNDAY', monday, sunday);
+            //console.log('MONDAY SUNDAY', monday, sunday);
 
             this.$store.dispatch('loadPersonalSchedule', { fromDate: dateForRequest(monday), toDate: dateForRequest(sunday) })
                 .then((response) => {
-                    console.log('SCHEDULE LOADED, RESPONSE:', response);
+                    //console.log('SCHEDULE LOADED, RESPONSE:', response);
                 });
         }
     },

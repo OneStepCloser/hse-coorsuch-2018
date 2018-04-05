@@ -117,7 +117,7 @@ function getWeek(monday) {
         clone.setHours(24 * i);
         week.push(clone);
     }
-    console.log('WEEK', week);
+    // console.log('WEEK', week);
     return week;
 }
 

@@ -35,7 +35,7 @@ module.exports = {
             src: '@/nuxt_plugins/ElementUI.js',
         },
         {
-            src: '@/nuxt_plugins/Popover.js',
+            src: '@/nuxt_plugins/V-tooltip.js',
             ssr: false,
         },
     ],

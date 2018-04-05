@@ -45,7 +45,7 @@ export default {
         }),
         nearestLessons() {
             const now = new Date(currentDay);
-            console.log('MY DATE', now);
+            // console.log('MY DATE', now);
             let indexOfDay = -1;
             let indexOfLesson = -1;
 
@@ -53,7 +53,7 @@ export default {
                 for (let i = 0; i < this.personalSchedule[day].length; ++i) {
                     const begin = new Date(`${day} ${this.personalSchedule[day][i].beginLesson}`);
                     const end = new Date(`${day} ${this.personalSchedule[day][i].endLesson}`);
-                    console.log('BEGIN END', begin, end, now);
+                    // console.log('BEGIN END', begin, end, now);
                     if (begin.getTime() <= now.getTime() && now.getTime() <= end.getTime()) {
                         indexOfDay = day;
                         indexOfLesson = i;
