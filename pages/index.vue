@@ -2,6 +2,7 @@
     <div class="schedule">
         <h2>Расписание занятий</h2>
 
+
         <div v-if="personalSchedule !== -1">
             <div class="pages-container centered">
                 <a class="link clickable"
@@ -19,6 +20,10 @@
                     <img src="/img/arrow-right.svg"
                          class="arrow-right"></a>
             </div>
+
+            <button class="current-week-button clickable centered-text"
+                    @click="goToCurrentWeek">Вернуться к текущей неделе
+            </button>
 
             <schedule-table v-if="!loading"
                             :week="week"
@@ -97,11 +102,9 @@ export default {
             this.sunday.setHours((isNext || -1) * 24 * 7);
             this.week = getWeek(this.monday);
 
-            this.isDefault = false;
-
-            // console.log('BEFORE REQUEST');
-
+            this.isDefault = false; // now showing non-current week
             this.loading = true;
+
             getPersonalSchedule(this.dateForRequest(this.monday), this.dateForRequest(this.sunday), this.$store.getters.email)
                 .then((response) => {
                     if (response.data.query.results === null) {
@@ -114,29 +117,50 @@ export default {
                     }
 
                     this.loading = false;
-                    // console.log('NOW SCHEDULE: ', this.nonDefaultSchedule);
                 })
                 .catch((error) => {
-                    // console.log('ERROR', error);
+                    console.log('ERROR', error);
                 });
         },
+        goToCurrentWeek() {
+            this.loading = true;
+            setTimeout(() => { this.loading = false; }, 500);
+
+            this.today = new Date(currentDay); // TODO
+            this.monday = getMonday(this.today);
+            this.sunday = getSunday(this.today);
+            this.week = getWeek(this.monday);
+
+            this.isDefault = true;
+            // console.log('GO TO CURRENT', this.personalSchedule);
+        },
+    },
+    created() {
+        this.today = new Date(currentDay); // TODO
+        this.monday = getMonday(this.today);
+        this.sunday = getSunday(this.today);
+        this.week = getWeek(this.monday);
     },
     watch: {
-        emailFromStore(newEmail, oldEmail) {
+        emailFromStore() {
             // console.log('OLD', oldEmail, 'NEW', newEmail);
             const today = new Date(currentDay); // TODO
             const monday = getMonday(today);
             const sunday = getSunday(today);
 
             this.loading = true;
+
+            // if email in local storage (and subsequently in store) is changed, renew schedule table
             this.$store.dispatch('loadPersonalSchedule', { fromDate: dateForRequest(monday), toDate: dateForRequest(sunday) })
-                .then((response) => {
-                    if (!this.isDefault) {
-                        //console.log('MONDAY IS', this.monday, 'SUNDAY IS', this.sunday);
-                        getPersonalSchedule(this.dateForRequest(this.monday), this.dateForRequest(this.sunday), this.$store.getters.email)
+                .then(() => {
+                    if (!this.isDefault) { // if later was shown non-current week get personal schedule for this week
+                        getPersonalSchedule(
+                            this.dateForRequest(this.monday), this.dateForRequest(this.sunday),
+                            this.$store.getters.email,
+                        ) // TODO handle wrong email
                             .then((response) => {
                                 if (response.data.query.results === null) {
-                                    this.nonDefaultSchedule = {};
+                                    this.nonDefaultSchedule = {}; // no lessons, return empty object
                                 } else {
                                     this.nonDefaultSchedule = _.groupBy(
                                         response.data.query.results.json.json,
@@ -145,7 +169,6 @@ export default {
                                 }
 
                                 this.loading = false;
-                                // console.log('NOW SCHEDULE: ', this.nonDefaultSchedule);
                             })
                             .catch((error) => {
                                 console.log('ERROR', error);
@@ -156,12 +179,6 @@ export default {
 
 
         },
-    },
-    created() {
-        this.today = new Date(currentDay); // TODO
-        this.monday = getMonday(this.today);
-        this.sunday = getSunday(this.today);
-        this.week = getWeek(this.monday);
     },
     components: { ScheduleTable, LoopingRhombusesSpinner },
 };
@@ -212,7 +229,7 @@ export default {
                     }
                 }
 
-                &:hover {
+                &:hover, &:focus {
                     color: $text-color-dark;
                     //text-decoration: underline;
                 }
@@ -239,6 +256,26 @@ export default {
                 margin-left: 10px;
                 font-size: 1.3em;
             }
+        }
+
+        .current-week-button {
+            display: block;
+            padding: 10px 15px;
+            margin-top: 10px;
+            width: 100%;
+            border: none;
+            outline: none;
+            //border-bottom: 1px solid $attention-color;
+            //border-top: 1px solid $attention-color;
+            color: $attention-color;
+            transition: background-color, .5s;
+            outline: none;
+            background-color: $text-color-light;
+
+            &:hover {
+                background-color: $attention-color-transparent;
+            }
+
         }
     }
 </style>

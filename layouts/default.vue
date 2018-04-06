@@ -30,18 +30,18 @@ export default {
             });
         this.$store.dispatch('loadEmailFromLocalStorage');
         this.$store.dispatch('loadPreferedBuilding');
-        // this.$store.dispatch('loadEmailFromLocalStorage');
 
+        // if there's email in localStorage, download it to store and download personal
+        // schedule for current week
         if (this.$store.getters.email !== -1) {
             const today = new Date(currentDay); // TODO
             const monday = getMonday(today);
             const sunday = getSunday(today);
-            //console.log('MONDAY SUNDAY', monday, sunday);
 
             this.$store.dispatch('loadPersonalSchedule', { fromDate: dateForRequest(monday), toDate: dateForRequest(sunday) })
                 .then((response) => {
-                    //console.log('SCHEDULE LOADED, RESPONSE:', response);
-                });
+                    // console.log('SCHEDULE LOADED, RESPONSE:', response);
+                }); // TODO handle wrong email
         }
     },
     components: {

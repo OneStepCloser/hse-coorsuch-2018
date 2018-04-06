@@ -79,6 +79,9 @@ export default {
             return dateForRequest(date);
         },
     },
+    created() {
+        console.log('lolkek', this.personalSchedule);
+    },
 };
 </script>
 

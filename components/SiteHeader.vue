@@ -16,46 +16,6 @@
                        exact>Свободные аудитории
             </nuxt-link>
 
-
-            <!--<v-tooltip-->
-            <!--offset="16"-->
-            <!--:auto-hide="false"-->
-            <!--placement="bottom-end"-->
-            <!--trigger="manual"-->
-            <!--:open="!isSent"-->
-            <!--&gt;-->
-            <!--<div class="avatar clickable tooltip-target"-->
-            <!--:class="{ 'not-logged': emailFromStorage === -1 }"-->
-            <!--@click="showPopover">-->
-            <!--<span class="initials">{{ initials }}</span>-->
-            <!--<img class="arrow-down clickable"-->
-            <!--src="/img/arrow-down.svg">-->
-
-            <!--</div>-->
-
-
-            <!--<template slot="popover">-->
-            <!--<div class="form-container">-->
-            <!--<form>-->
-            <!--<input v-model="emailFromStorage"-->
-            <!--@focus="emailIsInputed"-->
-            <!--class="input"-->
-            <!--placeholder="slzakharov@edu.hse.ru"-->
-            <!--type="email"-->
-            <!--name="email"-->
-            <!--autocomplete="on">-->
-            <!--</form>-->
-            <!--<button class="button clickable"-->
-            <!--@click="changeEmail">-->
-            <!--Готово!-->
-            <!--</button>-->
-            <!--</div>-->
-            <!--<div class="error"-->
-            <!--:class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным-->
-            <!--</div>-->
-            <!--</template>-->
-            <!--</v-tooltip>-->
-
             <div class="avatar clickable tooltip-target"
                  :class="{ 'not-logged': !emailExists }"
                  @click="togglePopover"
@@ -91,10 +51,7 @@
                 <div class="error"
                      :class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным
                 </div>
-
-
             </el-popover>
-
 
         </div>
     </div>
@@ -147,7 +104,6 @@ export default {
         },
         togglePopover() {
             this.showPopover = !this.showPopover;
-            // console.log('IS SENT', this.isSent);
         },
     },
     created() {
@@ -178,12 +134,12 @@ export default {
     .el-popover {
         background-color: $attention-color;
         border-color: $attention-color;
-    }
 
-    .popper__arrow {
-        border-bottom-color: $attention-color !important;
-        &::after {
+        .popper__arrow {
             border-bottom-color: $attention-color !important;
+            &::after {
+                border-bottom-color: $attention-color !important;
+            }
         }
     }
 </style>
@@ -214,7 +170,6 @@ export default {
                 margin: 0 0 0 10px;
                 font-size: 35px;
                 font-weight: 900;
-                //line-height: 55px;
             }
         }
 
@@ -253,7 +208,6 @@ export default {
                 height: 45px;
                 color: $text-color-light;
                 text-align: center;
-                //line-height: 45px;
                 font-family: Raleway, sans-serif;
                 font-size: 1.5em;
                 font-weight: 700;

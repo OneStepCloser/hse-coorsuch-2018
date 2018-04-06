@@ -3,24 +3,37 @@
         <div v-if="personalSchedule !== -1"
              class="current-pairs">
 
-            <div class="label">сейчас у вас:</div>
-            <div class="next-container">
-                <span class="info time">{{ `${nearestLessons.current.beginLesson}` }}</span>
-                <div>
-                    <span class="info info_important">{{ `${nearestLessons.current.kindOfWork}, ${nearestLessons.current.discipline} ` }}</span>
-                    <span class="info">в ауд </span>
-                    <span class="info info_important">{{ `${nearestLessons.current.auditorium}.` }}</span>
+            <div v-if="nearestLessons">
+                <div class="label">сейчас у вас:</div>
+                <div class="next-container"
+                     v-if="nearestLessons.current !== -1">
+                    <span class="info time">{{ `${nearestLessons.current.beginLesson}` }}</span>
+                    <div>
+                        <span class="info info_important">{{ `${nearestLessons.current.kindOfWork}, ${nearestLessons.current.discipline} ` }}</span>
+                        <span class="info">в ауд </span>
+                        <span class="info info_important">{{ `${nearestLessons.current.auditorium}.` }}</span>
+                    </div>
                 </div>
-            </div>
+                <div v-else
+                class="info info_important">Нет пары</div>
 
-            <div class="label">следующая пара:</div>
-            <div class="next-container">
-                <span class="info time">{{ `${nearestLessons.next.beginLesson}` }}</span>
-                <div>
-                    <span class="info info_important">{{ `${nearestLessons.next.kindOfWork}, ${nearestLessons.next.discipline} ` }}</span>
-                    <span class="info">в ауд </span>
-                    <span class="info info_important">{{ `${nearestLessons.next.auditorium}.` }}</span>
+                <div class="label">следующая пара:</div>
+                <div class="next-container"
+                     v-if="nearestLessons.next !== -1">
+                    <span class="info time">{{ `${nearestLessons.next.beginLesson}` }}</span>
+                    <div>
+                        <span class="info info_important">{{ `${nearestLessons.next.kindOfWork}, ${nearestLessons.next.discipline} ` }}</span>
+                        <span class="info">в ауд </span>
+                        <span class="info info_important">{{ `${nearestLessons.next.auditorium}.` }}</span>
+                    </div>
                 </div>
+                <div v-else
+                     class="info info_important">Нет пары, домой!</div>
+            </div>
+            <div v-else class="no-lessons">
+                <img src="/img/sunbed.svg"
+                     class="no-lessons__image"/>
+                <span>Ура, сегодня нет пар! Приятного отдыха!</span>
             </div>
 
         </div>
@@ -30,6 +43,7 @@
 <script>
 import { mapGetters } from '~/node_modules/vuex';
 import { currentDay } from '~/assets/js/static_data';
+import { dateForRequest } from '~/assets/js/utils';
 
 export default {
     name: 'CurrentPairs',
@@ -45,29 +59,35 @@ export default {
         }),
         nearestLessons() {
             const now = new Date(currentDay);
-            // console.log('MY DATE', now);
-            let indexOfDay = -1;
             let indexOfLesson = -1;
+            let nextLessonIndex = -1;
+            const todayKey = dateForRequest(now);
 
-            for (const day of Object.keys(this.personalSchedule)) {
-                for (let i = 0; i < this.personalSchedule[day].length; ++i) {
-                    const begin = new Date(`${day} ${this.personalSchedule[day][i].beginLesson}`);
-                    const end = new Date(`${day} ${this.personalSchedule[day][i].endLesson}`);
-                    // console.log('BEGIN END', begin, end, now);
-                    if (begin.getTime() <= now.getTime() && now.getTime() <= end.getTime()) {
-                        indexOfDay = day;
-                        indexOfLesson = i;
-                    }
+            if (!this.personalSchedule.hasOwnProperty(todayKey)) {
+                return null;
+            }
+
+            const currentDaySchedule = this.personalSchedule[todayKey];
+
+            for (let i = 0; i < currentDaySchedule.length; ++i) {
+                const begin = new Date(`${todayKey} ${currentDaySchedule[i].beginLesson}`);
+                const end = new Date(`${todayKey} ${currentDaySchedule[i].endLesson}`);
+
+                // searching only if current lesson is not found yet
+                if (indexOfLesson === -1 && begin.getTime() <= now.getTime() && now.getTime() <= end.getTime()) {
+                    indexOfLesson = i;
                 }
-                if (indexOfDay !== -1) {
-                    break;
+
+                // searching only if next lesson is not found yet
+                if (nextLessonIndex === -1 && begin.getTime() >= now.getTime()) {
+                    nextLessonIndex = i;
                 }
             }
+
+
             return {
-                current: indexOfDay === -1 ? -1 : this.personalSchedule[indexOfDay][indexOfLesson],
-                next: indexOfDay === -1 ? -1
-                    : (indexOfLesson === this.personalSchedule[indexOfDay].length - 1) ? -1
-                        : this.personalSchedule[indexOfDay][indexOfLesson + 1],
+                current: indexOfLesson === -1 ? -1 : currentDaySchedule[indexOfLesson],
+                next: nextLessonIndex === -1 ? -1 : currentDaySchedule[nextLessonIndex],
             };
         },
     },
@@ -121,6 +141,23 @@ export default {
 
             & > * {
                 display: block;
+            }
+        }
+
+        .no-lessons {
+            color: $text-color-light;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            & > * {
+                padding: 0 5px;
+            }
+
+            &__image {
+                width: 45px;
+                height: 45px;
             }
         }
     }

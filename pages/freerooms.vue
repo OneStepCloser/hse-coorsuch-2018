@@ -72,13 +72,13 @@ export default {
             loading: false,
             lessons: [
                 { label: '1 пара (9:00 - 10:20)', startHour: 9, startMinute: 0, endHour: 10, endMinute: 20 },
-                { label: '2 пара (10:30 - 11:50)', startHour: 10, startMinute: 30, endHour: 11, endMinute: 50 },
-                { label: '3 пара (12:10 - 13:30)', startHour: 12, startMinute: 10, endHour: 13, endMinute: 30 },
-                { label: '4 пара (13:40 - 15:00)', startHour: 13, startMinute: 40, endHour: 15, endMinute: 0 },
-                { label: '5 пара (15:10 - 16:30)', startHour: 15, startMinute: 10, endHour: 16, endMinute: 30 },
-                { label: '6 пара (16:40 - 18:00)', startHour: 16, startMinute: 40, endHour: 18, endMinute: 0 },
-                { label: '7 пара (18:10 - 19:30)', startHour: 18, startMinute: 10, endHour: 19, endMinute: 30 },
-                { label: '8 пара (19:40 - 21:00)', startHour: 19, startMinute: 40, endHour: 21, endMinute: 0 },
+                { label: '2 пара (10:30 - 11:50)', startHour: 10, startMinute: 20, endHour: 11, endMinute: 50 },
+                { label: '3 пара (12:10 - 13:30)', startHour: 11, startMinute: 50, endHour: 13, endMinute: 30 },
+                { label: '4 пара (13:40 - 15:00)', startHour: 13, startMinute: 30, endHour: 15, endMinute: 0 },
+                { label: '5 пара (15:10 - 16:30)', startHour: 15, startMinute: 0, endHour: 16, endMinute: 30 },
+                { label: '6 пара (16:40 - 18:00)', startHour: 16, startMinute: 30, endHour: 18, endMinute: 0 },
+                { label: '7 пара (18:10 - 19:30)', startHour: 18, startMinute: 0, endHour: 19, endMinute: 30 },
+                { label: '8 пара (19:40 - 21:00)', startHour: 19, startMinute: 30, endHour: 21, endMinute: 0 },
             ],
 
         };
@@ -150,10 +150,9 @@ export default {
     created() {
         this.date = new Date();
         this.lessonNumber = this.currentPair();
-        // if (this.$store.getters.preferedBuilding !== -1) {
-        //     this.buildingId = window.localStorage.kovtoroiBuilding;
-        // }
-        // this.resultIsLoaded = false;
+        if (process.browser && window.localStorage.kovtoroiBuilding) {
+            this.buildingId = Number(window.localStorage.kovtoroiBuilding);
+        }
     },
     components: { FreeRoomsTable, LoopingRhombusesSpinner },
 };
