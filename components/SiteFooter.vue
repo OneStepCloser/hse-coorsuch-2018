@@ -1,11 +1,15 @@
 <template>
-    <div class="footer">
+    <div class="site-footer">
         <div class="title centered-text">Поделиться</div>
         <div class="socnets-container">
-            <img class="icon clickable"
-                 src="/img/vk.svg">
-            <img class="icon clickable"
-                 src="/img/tg.svg">
+            <a href="http://vk.com/share.php?url=https://onestepcloser.github.io/fintech-coorsuch/&title=Ко второй - расписание занятий и свободные аудитории в корпусах НИУ ВШЭ&description=«Ко второй» покажет расписание занятий а также поможет найти место для того, чтобы спокойно поботать во время окна, переждать скучную лекцию или провести консультацию умного одногруппника&image=https://github.com/OneStepCloser/fintech-coorsuch/blob/master/public/images/soc-network.jpg?raw=true&noparse=true">
+                <img class="icon clickable"
+                     src="/img/vk.svg">
+            </a>
+            <a href="https://telegram.me/share/url?url=https://onestepcloser.github.io/&text=Ко второй - расписание занятий и свободные аудитории в корпусах НИУ ВШЭ">
+                <img class="icon clickable"
+                     src="/img/tg.svg">
+            </a>
         </div>
         <a href="https://vk.com/one_step_cl0ser"
            class="author clickable">OneStepCloser</a>
@@ -20,14 +24,12 @@ export default {
 
 <style lang="scss" scoped>
     @import '~@/assets/style/_colors.scss';
-    .footer {
+
+    .site-footer {
         background-color: $dark-color-darker;
         color: $text-color-light;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        left: 0;
         padding: 20px 15%;
+        position: relative;
 
         .title {
             font-family: Raleway, sans-serif;

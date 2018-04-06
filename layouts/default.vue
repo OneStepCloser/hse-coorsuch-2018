@@ -1,10 +1,12 @@
 <template>
     <div class="page-wrap">
-        <not-logged-block/>
-        <site-header/>
-        <current-pairs/>
-        <nuxt class="content"/>
-        <!--<site-footer/>-->
+        <div class="header-and-content">
+            <not-logged-block/>
+            <site-header/>
+            <current-pairs/>
+            <nuxt class="content"/>
+        </div>
+        <site-footer class="footer"/>
     </div>
 </template>
 <script>
@@ -66,6 +68,18 @@ export default {
     }
 
     .page-wrap {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
 
+        .header-and-content {
+            flex: 1 0 auto;
+        }
+
+        .footer {
+            flex: 0 0 auto;
+        }
     }
+
+
 </style>

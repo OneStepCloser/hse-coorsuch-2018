@@ -95,14 +95,14 @@ const store = () => new Vuex.Store({
             // console.log('LOADING 1', state.loading);
             return getPersonalSchedule(fromDate, toDate, state.email)
                 .then((response) => {
-
+                    console.log('RESPONSE', response)
 
                     if (response.data.query.results === null) {
                         commit('personalScheduleLoaded', {});
                     } else {
                         commit('personalScheduleLoaded', _.groupBy(response.data.query.results.json.json, lesson => lesson.date));
                     }
-                    console.log(response.data.query.results.json.json);
+                    // console.log(response.data.query.results.json.json);
                 });
         },
     },
