@@ -43,14 +43,20 @@
             />
             <span>Немного терпения...</span>
         </div>
-        <free-rooms-table :rooms="freeRooms"
-                          v-if="freeRooms && freeRooms.length > 0 && !loading"/>
-        <div v-else-if="freeRooms === -1 && !loading"
-             class="tip centered-text">Заполните поля выше и нажмите на кнопку "Стартуем!"
-        </div>
-        <div v-else-if="!loading"
-             class="empty-list centered-text">Кажется, свободных аудиторий нет 😭
-        </div>
+
+        <transition name="fade">
+            <free-rooms-table :rooms="freeRooms"
+                              v-if="freeRooms && freeRooms.length > 0 && !loading"
+                              key="1"/>
+            <div v-else-if="freeRooms === -1 && !loading"
+                 class="tip centered-text"
+                 key="2">Заполните поля выше и нажмите на кнопку "Стартуем!"
+            </div>
+            <div v-else-if="!loading"
+                 class="empty-list centered-text"
+                 key="3">Кажется, свободных аудиторий нет 😭
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -253,6 +259,18 @@ export default {
     .tip, .empty-list {
         margin-top: 30px;
         font-size: 1.3em;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 0.5s;
+    }
+
+    .fade-enter-to {
+        opacity: 1;
+    }
+
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
     }
 
 </style>

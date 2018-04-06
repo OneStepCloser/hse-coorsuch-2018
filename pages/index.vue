@@ -25,9 +25,11 @@
                     @click="goToCurrentWeek">Вернуться к текущей неделе
             </button>
 
+            <transition name="fade">
             <schedule-table v-if="!loading"
                             :week="week"
                             :personal-schedule="isDefault ? personalSchedule : nonDefaultSchedule"/>
+            </transition>
 
         </div>
         <div v-else-if="!storeLoading"
@@ -277,5 +279,17 @@ export default {
             }
 
         }
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 0.5s;
+    }
+
+    .fade-enter-to {
+        opacity: 1;
+    }
+
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
     }
 </style>
