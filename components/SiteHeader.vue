@@ -17,47 +17,83 @@
             </nuxt-link>
 
 
-            <v-popover
-                offset="16"
-                :auto-hide="false"
-                placement="bottom-end"
-                trigger="manual"
-                :open="!isSent"
-            >
-                <div class="avatar clickable tooltip-target"
-                     :class="{ 'not-logged': emailFromStorage === -1 }"
-                     @click="showPopover">
-                    <span class="initials">{{ initials }}</span>
-                    <img class="arrow-down clickable"
-                         src="/img/arrow-down.svg">
+            <!--<v-tooltip-->
+            <!--offset="16"-->
+            <!--:auto-hide="false"-->
+            <!--placement="bottom-end"-->
+            <!--trigger="manual"-->
+            <!--:open="!isSent"-->
+            <!--&gt;-->
+            <!--<div class="avatar clickable tooltip-target"-->
+            <!--:class="{ 'not-logged': emailFromStorage === -1 }"-->
+            <!--@click="showPopover">-->
+            <!--<span class="initials">{{ initials }}</span>-->
+            <!--<img class="arrow-down clickable"-->
+            <!--src="/img/arrow-down.svg">-->
 
+            <!--</div>-->
+
+
+            <!--<template slot="popover">-->
+            <!--<div class="form-container">-->
+            <!--<form>-->
+            <!--<input v-model="emailFromStorage"-->
+            <!--@focus="emailIsInputed"-->
+            <!--class="input"-->
+            <!--placeholder="slzakharov@edu.hse.ru"-->
+            <!--type="email"-->
+            <!--name="email"-->
+            <!--autocomplete="on">-->
+            <!--</form>-->
+            <!--<button class="button clickable"-->
+            <!--@click="changeEmail">-->
+            <!--Готово!-->
+            <!--</button>-->
+            <!--</div>-->
+            <!--<div class="error"-->
+            <!--:class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным-->
+            <!--</div>-->
+            <!--</template>-->
+            <!--</v-tooltip>-->
+
+            <div class="avatar clickable tooltip-target"
+                 :class="{ 'not-logged': !emailExists }"
+                 @click="togglePopover"
+                 v-popover:popover>
+                <span class="initials">{{ initials }}</span>
+                <img class="arrow-down clickable"
+                     src="/img/arrow-down.svg">
+
+            </div>
+
+            <el-popover
+                ref="popover"
+                placement="bottom-end"
+                v-model="showPopover">
+
+                <div class="popover-label">Введите адрес корпоративной почты:</div>
+                <div class="form-container">
+
+                    <form>
+                        <input v-model="emailFromStorage"
+                               @focus="emailIsInputed"
+                               class="input"
+                               placeholder="slzakharov@edu.hse.ru"
+                               type="email"
+                               name="email"
+                               autocomplete="on">
+                    </form>
+                    <button class="button clickable"
+                            @click="changeEmail">
+                        Готово!
+                    </button>
+                </div>
+                <div class="error"
+                     :class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным
                 </div>
 
 
-                <template slot="popover">
-                    <div class="form-container">
-                        <form>
-                            <input v-model="emailFromStorage"
-                                   @focus="emailIsInputed"
-                                   class="input"
-                                   placeholder="slzakharov@edu.hse.ru"
-                                   type="email"
-                                   name="email"
-                                   autocomplete="on">
-                        </form>
-                        <!--v-model="inputedEmail">-->
-                        <!--@focus="emailIsInputed">-->
-                        <button class="button clickable"
-                                @click="changeEmail">
-                            <!--@click="saveEmail">-->
-                            Готово!
-                        </button>
-                    </div>
-                    <div class="error"
-                         :class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным
-                    </div>
-                </template>
-            </v-popover>
+            </el-popover>
 
 
         </div>
@@ -65,7 +101,8 @@
 </template>
 
 <script>
-import { checkEmail } from '~/utils';
+import { checkEmail } from '~/assets/js/utils';
+import { mapGetters } from '~/node_modules/vuex';
 
 export default {
     name: 'SiteHeader',
@@ -73,7 +110,7 @@ export default {
         return {
             email: '',
             invalidEmail: false,
-            isSent: true,
+            showPopover: false,
         };
     },
     computed: {
@@ -89,6 +126,9 @@ export default {
             const email = this.$store.getters.email;
             return email === -1 ? '' : email[0] + email[2];
         },
+        ...mapGetters({
+            emailExists: 'emailExists',
+        }),
     },
     methods: {
         changeEmail() {
@@ -96,7 +136,7 @@ export default {
                 if (checkEmail(this.email)) {
                     window.localStorage.setItem('kovtoroiEmail', this.email);
                     this.$store.dispatch('loadEmailFromLocalStorage');
-                    this.isSent = true;
+                    this.showPopover = false;
                 } else {
                     this.invalidEmail = true;
                 }
@@ -105,8 +145,8 @@ export default {
         emailIsInputed() {
             this.invalidEmail = false;
         },
-        showPopover() {
-            this.isSent = false;
+        togglePopover() {
+            this.showPopover = !this.showPopover;
             // console.log('IS SENT', this.isSent);
         },
     },
@@ -132,6 +172,18 @@ export default {
             right: 5px !important;
             left: unset !important;
             border-bottom: 6px solid $attention-color !important;
+        }
+    }
+
+    .el-popover {
+        background-color: $attention-color;
+        border-color: $attention-color;
+    }
+
+    .popper__arrow {
+        border-bottom-color: $attention-color !important;
+        &::after {
+            border-bottom-color: $attention-color !important;
         }
     }
 </style>
@@ -278,7 +330,16 @@ export default {
     }
 
     .not-logged {
-        background-image: url(/img/login.svg);
+        background-image: url(/img/unknown-user.svg);
+        background-size: 70%;
+        background-position: 60% 50%;
+        background-repeat: no-repeat;
+
+    }
+
+    .popover-label {
+        color: $text-color-light;
+        margin-bottom: 10px;
     }
 
     .show-enter-active, .show-leave-active {

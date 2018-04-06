@@ -1,4 +1,5 @@
 const axios = require('axios');
+import _ from '~/node_modules/lodash';
 
 const yqlUrl = 'https://query.yahooapis.com/v1/public/yql';
 

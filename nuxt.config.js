@@ -8,6 +8,7 @@ module.exports = {
     // env: config,
     build: {
         extend(config, ctx) {
+            global.Element = null;
             if (ctx.isServer) {
                 config.externals = [
                     nodeExternals({
@@ -34,10 +35,10 @@ module.exports = {
         {
             src: '@/nuxt_plugins/ElementUI.js',
         },
-        {
-            src: '@/nuxt_plugins/V-tooltip.js',
-            ssr: false,
-        },
+        // {
+        //     src: '@/nuxt_plugins/V-tooltip.js',
+        //     ssr: false,
+        // },
     ],
     modules: [
         '@nuxtjs/axios',

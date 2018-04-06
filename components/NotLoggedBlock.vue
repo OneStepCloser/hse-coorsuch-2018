@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="!emailExists"
+        <div v-if="!emailExists && show"
              class="not-logged centered-text">
             <div class="text">Чтобы наш сервис был ещё удобнее, введите адрес корпоративной почты</div>
             <div class="container">
@@ -19,13 +19,14 @@
                  :class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным
             </div>
             <img src="/img/close.svg"
-                 class="close clickable">
+                 class="close clickable"
+                 @click="close">
         </div>
     </div>
 </template>
 
 <script>
-import { checkEmail } from '~/utils';
+import { checkEmail } from '~/assets/js/utils';
 import { mapGetters } from '~/node_modules/vuex';
 
 export default {
@@ -34,6 +35,7 @@ export default {
         return {
             email: '',
             invalidEmail: false,
+            show: true,
         };
     },
     computed: {
@@ -45,12 +47,9 @@ export default {
                 this.email = value;
             },
         },
-        emailExists() {
-            console.log(this.emailFromStore !== -1);
-            return this.emailFromStore !== -1;
-        },
         ...mapGetters({
             emailFromStore: 'email',
+            emailExists: 'emailExists',
         }),
     },
     methods: {
@@ -69,6 +68,9 @@ export default {
         emailIsInputed() {
             this.invalidEmail = false;
         },
+        close() {
+            this.show = false;
+        },
 
     },
 
@@ -82,11 +84,6 @@ export default {
     .not-logged {
         background-color: $attention-color;
         padding: 20px 15%;
-        display: none;
-
-        &_visible {
-            display: block;
-        }
 
         .text {
             font-size: 1.3em;

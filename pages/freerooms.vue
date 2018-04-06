@@ -15,7 +15,8 @@
                     :label="building.address"/>
             </el-select>
             <div class="error centered-text"
-                 :class="{ 'error_visible': !buildingIsChosen }">Вы забыли ввести корпус!</div>
+                 :class="{ 'error_visible': !buildingIsChosen }">Вы забыли ввести корпус!
+            </div>
             <el-date-picker
                 v-model="date"
                 type="date"
@@ -30,7 +31,8 @@
                     :label="lesson.label"/>
             </el-select>
             <button class="go-button clickable"
-                    @click="showFreeRooms">Стартуем!</button>
+                    @click="showFreeRooms">Стартуем!
+            </button>
         </div>
         <div class="spinner"
              v-if="loading">
@@ -44,15 +46,17 @@
         <free-rooms-table :rooms="freeRooms"
                           v-if="freeRooms && freeRooms.length > 0 && !loading"/>
         <div v-else-if="freeRooms === -1 && !loading"
-             class="tip centered-text">Заполните поля выше и нажмите на кнопку "Стартуем!"</div>
+             class="tip centered-text">Заполните поля выше и нажмите на кнопку "Стартуем!"
+        </div>
         <div v-else-if="!loading"
-             class="empty-list centered-text">Кажется, свободных аудиторий нет 😭</div>
+             class="empty-list centered-text">Кажется, свободных аудиторий нет 😭
+        </div>
     </div>
 </template>
 
 <script>
 import { mapGetters } from '~/node_modules/vuex';
-import { dateForRequest } from '~/utils';
+import { dateForRequest } from '~/assets/js/utils';
 import FreeRoomsTable from '~/components/FreeRoomsTable';
 import { LoopingRhombusesSpinner } from '~/node_modules/epic-spinners';
 
@@ -83,6 +87,7 @@ export default {
         ...mapGetters({
             buildings: 'getBuildings',
             freeRooms: 'freeRooms',
+            preferedBuilding: 'preferedBuilding',
         }),
         // dateForRequest() {
         //     const year = this.date.getFullYear();
@@ -97,12 +102,15 @@ export default {
                 this.buildingIsChosen = false;
                 return;
             }
+            if (process.browser) {
+                window.localStorage.setItem('kovtoroiBuilding', this.buildingId);
+            }
+            console.log('BUILDING', this.buildingId);
             this.loading = true;
             // console.log('LOADING1', this.loading);
             this.$store.dispatch('loadFreeRooms', { date: dateForRequest(this.date), buildingId: this.buildingId, lessonNumber: this.lessonNumber })
                 .then(() => {
-                    this.loading = false; // Вот это исполняется сразу, почему?
-                    // console.log('LOADING2', this.loading);
+                    this.loading = false;
                 });
         },
 
@@ -142,6 +150,9 @@ export default {
     created() {
         this.date = new Date();
         this.lessonNumber = this.currentPair();
+        // if (this.$store.getters.preferedBuilding !== -1) {
+        //     this.buildingId = window.localStorage.kovtoroiBuilding;
+        // }
         // this.resultIsLoaded = false;
     },
     components: { FreeRoomsTable, LoopingRhombusesSpinner },
@@ -150,7 +161,6 @@ export default {
 
 <style lang="scss">
     @import '~@/assets/style/_colors.scss';
-
 
     .el-select-dropdown {
         width: 0;

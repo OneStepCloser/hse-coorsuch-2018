@@ -42,7 +42,7 @@
 
 <script>
 import { mapGetters } from '~/node_modules/vuex';
-import { getMonday, getWeek, getSunday, dateForRequest, addLeadingZeros, getPersonalSchedule } from '~/utils';
+import { getMonday, getWeek, getSunday, dateForRequest, addLeadingZeros, getPersonalSchedule } from '~/assets/js/utils';
 import ScheduleTable from '~/components/ScheduleTable';
 import { LoopingRhombusesSpinner } from '~/node_modules/epic-spinners';
 import { currentDay } from '~/assets/js/static_data';

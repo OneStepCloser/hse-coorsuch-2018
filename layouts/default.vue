@@ -14,7 +14,7 @@ import CurrentPairs from '~/components/CurrentLessons';
 import NotLoggedBlock from '~/components/NotLoggedBlock';
 import SiteFooter from '~/components/SiteFooter';
 
-import { getMonday, getSunday, dateForRequest } from '~/utils';
+import { getMonday, getSunday, dateForRequest } from '~/assets/js/utils';
 import { currentDay } from '~/assets/js/static_data';
 
 
@@ -29,6 +29,7 @@ export default {
                 console.log(error);
             });
         this.$store.dispatch('loadEmailFromLocalStorage');
+        this.$store.dispatch('loadPreferedBuilding');
         // this.$store.dispatch('loadEmailFromLocalStorage');
 
         if (this.$store.getters.email !== -1) {

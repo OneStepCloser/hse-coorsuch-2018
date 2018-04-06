@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { addLeadingZeros, dateForRequest } from '~/utils';
+import { addLeadingZeros, dateForRequest } from '~/assets/js/utils';
 
 export default {
     name: 'ScheduleTable',
