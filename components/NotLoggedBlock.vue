@@ -4,6 +4,7 @@
              class="not-logged centered-text">
             <div class="text">Чтобы наш сервис был ещё удобнее, введите адрес корпоративной почты</div>
             <div class="container">
+                <form @submit.prevent="saveEmail">
                 <input class="input"
                        placeholder="slzakharov@edu.hse.ru"
                        v-model="inputedEmail"
@@ -14,6 +15,7 @@
                 <button class="button clickable"
                         @click="saveEmail">Готово!
                 </button>
+                </form>
             </div>
             <div class="error"
                  :class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным

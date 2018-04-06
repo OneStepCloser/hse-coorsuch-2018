@@ -42,6 +42,9 @@ function getFreeRooms(date, buildingId, pairNumber) {
     return getRequest('http://ruz.hse.ru/ruzservice.svc/auditoriums', { buildingOid: buildingId })
         .then((response) => {
             let auditoriums = response.data.query.results.json.json;
+            if (!auditoriums) {
+                return auditoriums;
+            }
             auditoriums = auditoriums.filter(auditorium =>
                 (auditorium.typeOfAuditorium !== 'Кабинет преподавателя'));
 
@@ -62,6 +65,10 @@ function getFreeRooms(date, buildingId, pairNumber) {
 
             return Promise.all(arrayOfRequests);
         }).then((arrayOfAudNumbers) => {
+            console.log('NEW', arrayOfAudNumbers);
+            if (!arrayOfAudNumbers) {
+                return arrayOfAudNumbers;
+            }
             arrayOfAudNumbers = arrayOfAudNumbers.filter(el => el !== null);
             return arrayOfAudNumbers;
         })

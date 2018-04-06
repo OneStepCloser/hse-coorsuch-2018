@@ -34,7 +34,7 @@
                 <div class="popover-label">Введите адрес корпоративной почты:</div>
                 <div class="form-container">
 
-                    <form>
+                    <form @submit.prevent="changeEmail">
                         <input v-model="emailFromStorage"
                                @focus="emailIsInputed"
                                class="input"
@@ -42,11 +42,11 @@
                                type="email"
                                name="email"
                                autocomplete="on">
+                        <button class="button clickable"
+                                @click="changeEmail">
+                            Готово!
+                        </button>
                     </form>
-                    <button class="button clickable"
-                            @click="changeEmail">
-                        Готово!
-                    </button>
                 </div>
                 <div class="error"
                      :class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным

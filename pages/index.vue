@@ -32,7 +32,7 @@
         </div>
         <div v-else-if="!storeLoading"
              class="no-logged-message centered">
-            Для просмотра расписания необходимо ввести корпоративную почту (правый верхний угол).
+            Для просмотра расписания необходимо ввести корпоративную почту.
         </div>
         <div class="spinner"
              v-if="loading || storeLoading">
@@ -261,8 +261,8 @@ export default {
         .current-week-button {
             display: block;
             padding: 10px 15px;
-            margin-top: 10px;
-            width: 100%;
+            margin: 10px auto 0 auto;
+            //width: 100%;
             border: none;
             outline: none;
             //border-bottom: 1px solid $attention-color;
