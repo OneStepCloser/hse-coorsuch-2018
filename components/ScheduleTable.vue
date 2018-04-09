@@ -6,7 +6,8 @@
             <table class="table centered">
                 <thead>
                     <tr>
-                        <th colspan="3">
+                        <th colspan="3"
+                            :class="{ 'today-head': today === dateForRequest(day)}">
                             <span class="day-of-week">{{ `${weekDict[i]}` }}</span><span>{{ `, ${addLeadingZeros(day.getDate())}.${addLeadingZeros(day.getMonth() + 1)}.${day.getFullYear()}` }}
                             </span>
                         </th>
@@ -17,16 +18,20 @@
                 <tbody>
                     <tr v-if="!personalSchedule.hasOwnProperty(dateForRequest(day))">
                         <td class="no-lessons"
-                            colspan="3">Занятий нет</td>
+                            colspan="3">Занятий нет
+                        </td>
                     </tr>
 
                     <tr v-else
                         v-for="lesson in personalSchedule[dateForRequest(day)]">
-                        <td class="duration">
+                        <td class="duration"
+                            :class="{ 'today-row': today === dateForRequest(day)}">
                             {{ `${lesson.beginLesson} - ${lesson.endLesson}` }}
                         </td>
-                        <td class="auditorium">{{ `ауд. ${lesson.auditorium}` }}</td>
-                        <td class="info">
+                        <td class="auditorium"
+                            :class="{ 'today-row': today === dateForRequest(day)}">{{ `ауд. ${lesson.auditorium}` }}</td>
+                        <td class="info"
+                            :class="{ 'today-row': today === dateForRequest(day)}">
                             <div class="kind">{{ lesson.kindOfWork }}</div>
                             <div class="discipline">{{ lesson.discipline }}</div>
                             <div class="lecturer">{{ lesson.lecturer }}</div>
@@ -56,6 +61,10 @@ export default {
             default() {
                 return {};
             },
+        },
+        today: {
+            type: String,
+            default: '',
         },
     },
     data() {
@@ -141,6 +150,16 @@ export default {
 
         .no-lessons {
             text-align: center;
+        }
+
+        .today-row {
+            background-color: $attention-color-transparent;
+            border-bottom: solid 1px $attention-color;
+        }
+
+        .today-head {
+            background-color: $attention-color;
+            color: $text-color-light;
         }
     }
 </style>

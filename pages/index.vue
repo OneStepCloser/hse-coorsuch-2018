@@ -26,9 +26,10 @@
             </button>
 
             <transition name="fade">
-            <schedule-table v-if="!loading"
-                            :week="week"
-                            :personal-schedule="isDefault ? personalSchedule : nonDefaultSchedule"/>
+                <schedule-table v-if="!loading"
+                                :week="week"
+                                :personal-schedule="isDefault ? personalSchedule : nonDefaultSchedule"
+                                :today="todayKey"/>
             </transition>
 
         </div>
@@ -91,6 +92,9 @@ export default {
             storeLoading: 'loading',
             emailFromStore: 'email',
         }),
+        todayKey() {
+            return dateForRequest(new Date(currentDay));
+        },
     },
     methods: {
         dateForRequest(date) {
@@ -126,7 +130,9 @@ export default {
         },
         goToCurrentWeek() {
             this.loading = true;
-            setTimeout(() => { this.loading = false; }, 500);
+            setTimeout(() => {
+                this.loading = false;
+            }, 500);
 
             this.today = new Date(currentDay); // TODO
             this.monday = getMonday(this.today);
@@ -136,6 +142,7 @@ export default {
             this.isDefault = true;
             // console.log('GO TO CURRENT', this.personalSchedule);
         },
+
     },
     created() {
         this.today = new Date(currentDay); // TODO

@@ -1,20 +1,20 @@
 <template>
     <div>
-        <div v-if="!emailExists && show"
+        <div v-show="!emailExists && show"
              class="not-logged centered-text">
             <div class="text">Чтобы наш сервис был ещё удобнее, введите адрес корпоративной почты</div>
             <div class="container">
                 <form @submit.prevent="saveEmail">
-                <input class="input"
-                       placeholder="slzakharov@edu.hse.ru"
-                       v-model="inputedEmail"
-                       @focus="emailIsInputed"
-                       type="email"
-                       name="email"
-                       autocomplete="on">
-                <button class="button clickable"
-                        @click="saveEmail">Готово!
-                </button>
+                    <input class="input"
+                           placeholder="slzakharov@edu.hse.ru"
+                           v-model="inputedEmail"
+                           @focus="emailIsInputed"
+                           type="email"
+                           name="email"
+                           autocomplete="on">
+                    <button class="button clickable"
+                            @click="saveEmail">Готово!
+                    </button>
                 </form>
             </div>
             <div class="error"

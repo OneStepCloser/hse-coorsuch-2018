@@ -9,7 +9,7 @@ const lessons = [
     { label: '7 пара (18:10 - 19:30)', startHour: 18, startMinute: 10, endHour: 19, endMinute: 40 },
     { label: '8 пара (19:40 - 21:00)', startHour: 19, startMinute: 40, endHour: 21, endMinute: 0 },
 ];
-const currentDay = '2018.05.5 13:50';
+const currentDay = '2018.04.10 16:50';
 
 export {
     lessons,
