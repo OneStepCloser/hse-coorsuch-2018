@@ -8,13 +8,15 @@
             <nuxt-link class="link"
                        to="/"
                        active-class="link_active"
-                       exact>Расписание
-            </nuxt-link>
+                       exact>
+                <span>Расписание</span>
+            <div class="menu-icon menu-icon-schedule"/></nuxt-link>
             <nuxt-link class="link"
                        to="/freerooms"
                        active-class="link_active"
-                       exact>Свободные аудитории
-            </nuxt-link>
+                       exact>
+                <span>Свободные аудитории</span>
+            <div class="menu-icon menu-icon-rooms"/></nuxt-link>
 
             <div class="avatar clickable tooltip-target"
                  :class="{ 'not-logged': !emailExists }"
@@ -155,6 +157,18 @@ export default {
         padding: 0 15%;
         position: relative;
 
+        @media (max-width: 965px) {
+            padding: 0 5% 0 15%;
+        }
+
+        @media (max-width: 600px) {
+        padding: 0 calc(5% + 25px) 0 5%;
+        }
+
+        /*@media (max-width: 735px) {*/
+        /*padding: 0 5% 0 15%;*/
+        /*}*/
+
         .title-container {
             float: left;
             display: flex;
@@ -172,6 +186,10 @@ export default {
                 margin: 0 0 0 10px;
                 font-size: 35px;
                 font-weight: 900;
+
+                @media (max-width: 535px) {
+                    display: none;
+                }
             }
         }
 
@@ -189,6 +207,8 @@ export default {
                 transition: background-color, .5s;
                 font-weight: 500;
                 letter-spacing: 0.1em;
+                display: flex;
+                align-items: stretch;
 
                 &:hover {
                     background-color: $accent-color-light;
@@ -196,6 +216,37 @@ export default {
 
                 &:active {
 
+                }
+
+                span {
+                    @media (max-width: 830px) {
+                        display: none;
+                    }
+                }
+
+                .menu-icon-wrapper {
+                    height: 100%;
+                }
+
+                .menu-icon {
+                    width: 35px;
+                    height: 60px;
+                    background-size: 25px 25px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    display: none;
+
+                    &-schedule {
+                        background-image: url(/img/schedule.svg);
+                    }
+
+                    &-rooms {
+                        background-image: url(/img/door.svg);
+                    }
+
+                    @media (max-width: 830px) {
+                        display: block;
+                    }
                 }
             }
 
@@ -216,6 +267,10 @@ export default {
                 margin-left: 25px;
                 overflow: visible;
                 position: relative;
+
+                @media (max-width: 535px) {
+                    margin-left: 10px;
+                }
 
                 .initials {
                     line-height: 45px;
@@ -287,7 +342,7 @@ export default {
 
     .not-logged {
         background-image: url(/img/unknown-user.svg);
-        background-size: 70%;
+        background-size: 60%;
         background-position: 60% 50%;
         background-repeat: no-repeat;
 

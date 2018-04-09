@@ -21,9 +21,11 @@
                 v-model="date"
                 type="date"
                 placeholder="Pick a day"
-                format="dd.MM.yyyy"/>
+                format="dd.MM.yyyy"
+                class="date-field"/>
             <el-select v-model="lessonNumber"
-                       placeholder="Номер пары">
+                       placeholder="Номер пары"
+                       class="lesson-field">
                 <el-option
                     v-for="(lesson, i) in lessons"
                     :key="i + 1"
@@ -188,10 +190,19 @@ export default {
     .freerooms {
         padding: 20px 15%;
 
+        @media (max-width: 600px) {
+            padding: 20px 5%;
+
+        }
+
         .container {
             display: flex;
             flex-wrap: wrap;
             margin-left: -20px;
+
+            @media (max-width: 660px) {
+                flex-direction: column;
+            }
 
             & > * {
                 margin-left: 20px;
@@ -206,6 +217,17 @@ export default {
                     margin-bottom: 2px;
                 }
             }
+
+            .date-field, .lesson-field {
+                flex-shrink: 1;
+                flex-grow: 0;
+                flex-basis: 33%;
+
+                @media (max-width: 660px) {
+                    width: calc(100% - 20px);
+                }
+            }
+
 
             .go-button {
                 padding: 10px 15px;

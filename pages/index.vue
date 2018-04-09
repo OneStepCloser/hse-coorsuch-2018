@@ -8,17 +8,17 @@
                 <a class="link clickable"
                    @click="anotherWeek(false)">
                     <img src="/img/arrow-left.svg"
-                         class="arrow-left">
-                    Предыдущая&nbsp;неделя</a>
+                         class="arrow-left clickable">
+                    <span>Предыдущая&nbsp;неделя</span></a>
                 <div class="current-week centered-text">
                     {{ `${addLeadingZeros(monday.getDate())}&nbsp;${monthDict[monday.getMonth()]}&nbsp;${monday.getFullYear()}&nbsp;-
                     ${addLeadingZeros(sunday.getDate())}&nbsp;${monthDict[sunday.getMonth()]}&nbsp;${sunday.getFullYear()}`
                     }}
                 </div>
                 <a class="link clickable"
-                   @click="anotherWeek(true)">Следующая&nbsp;неделя
+                   @click="anotherWeek(true)"><span>Следующая&nbsp;неделя</span>
                     <img src="/img/arrow-right.svg"
-                         class="arrow-right"></a>
+                         class="arrow-right clickable"></a>
             </div>
 
             <button class="current-week-button clickable centered-text"
@@ -29,7 +29,8 @@
                 <schedule-table v-if="!loading"
                                 :week="week"
                                 :personal-schedule="isDefault ? personalSchedule : nonDefaultSchedule"
-                                :today="todayKey"/>
+                                :today="todayKey"
+                                class="schedule-table"/>
             </transition>
 
         </div>
@@ -206,15 +207,19 @@ export default {
         padding-bottom: 40px;
 
         h2 {
-            padding: 0 20%;
+            padding: 0 15%;
             color: $attention-color;
             font-family: Raleway, sans-serif;
             font-size: 2em;
             font-weight: 700;
+
+            @media (max-width: 600px) {
+                padding: 0 5%;
+            }
         }
 
         .pages-container {
-            width: 60%;
+            width: 70%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -242,18 +247,31 @@ export default {
                     color: $text-color-dark;
                     //text-decoration: underline;
                 }
+
+                span {
+                    @media (max-width: 760px) {
+                        display: none;
+                    }
+                }
             }
 
             .current-week {
                 font-size: 1.5em;
+                padding: 0 20px;
+
+
             }
         }
 
         .no-logged-message {
-            width: 60%;
+            width: 70%;
             font-size: 1.5em;
             margin-top: 20px;
             margin-bottom: 40px;
+
+            @media (max-width: 600px) {
+                width: 90%;
+            }
         }
 
         .spinner {
@@ -270,9 +288,9 @@ export default {
         .current-week-button {
             display: block;
             padding: 10px 15px;
-            margin: 10px auto 0 auto;
+            margin: 20px auto 0 auto;
             //width: 100%;
-            border: none;
+            //border: none;
             outline: none;
             //border-bottom: 1px solid $attention-color;
             //border-top: 1px solid $attention-color;
@@ -280,6 +298,8 @@ export default {
             transition: background-color, .5s;
             outline: none;
             background-color: $text-color-light;
+            border: solid $attention-color-transparent 1px;
+            border-radius: 2px;
 
             &:hover {
                 background-color: $attention-color-transparent;

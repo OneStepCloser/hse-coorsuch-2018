@@ -42,6 +42,7 @@ export default {
             display: flex;
             justify-content: center;
             margin-left: -20px;
+            margin-bottom: 10px;
 
             .icon {
                 width: 40px;

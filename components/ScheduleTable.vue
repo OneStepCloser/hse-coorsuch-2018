@@ -106,6 +106,10 @@ export default {
         font-size: 1.2em;
         font-weight: 300;
 
+        @media (max-width: 600px) {
+            width: 90%;
+        }
+
         th {
             background-color: $accent-color-lightest;
             padding: 5px;
@@ -128,14 +132,27 @@ export default {
         .duration {
             width: 13ch;
             text-align: center;
+
+            @media (max-width: 550px) {
+                width: 7ch;
+                font-size: 0.8em;
+            }
         }
 
         .auditorium {
             width: 10ch;
             text-align: center;
+
+            @media (max-width: 550px) {
+                width: 4ch;
+                font-size: 0.8em;
+            }
         }
 
         .info {
+            @media (max-width: 550px) {
+                font-size: 0.8em;
+            }
             .discipline {
                 font-size: 1.2em;
                 font-weight: 400;
@@ -144,6 +161,10 @@ export default {
             .building {
                 color: $dark-color;
                 font-size: 0.8em;
+            }
+
+            .lecturer {
+                margin-top: 10px;
             }
 
         }

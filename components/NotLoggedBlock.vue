@@ -87,6 +87,10 @@ export default {
         background-color: $attention-color;
         padding: 20px 15%;
 
+        @media (max-width: 505px) {
+            padding: 20px 5%;
+        }
+
         .text {
             font-size: 1.3em;
             color: $text-color-light;
@@ -106,6 +110,10 @@ export default {
                 transition-property: border, box-shadow;
                 transition-duration: .5s, .5s;
 
+                @media (max-width: 380px) {
+                    width: 90%;
+                }
+
                 &:focus {
                     box-shadow: 0 0 10px $accent-color-light;
                     border: 1px solid $accent-color-light;
@@ -120,6 +128,11 @@ export default {
                 color: $text-color-light;
                 transition: background-color, .5s;
                 outline: none;
+                margin-top: 15px;
+
+                @media (max-width: 380px) {
+                    width: 100%;
+                }
 
                 &:hover {
                     background-color: $light-very-transparent-color;
@@ -133,6 +146,11 @@ export default {
             position: absolute;
             top: 20px;
             right: calc(15% - 23px);
+
+            @media (max-width: 505px) {
+                top: 10px;
+                right: 10px;
+            }
         }
 
         .error {

@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div v-else
-                     class="info info_important">Нет пары, домой!</div>
+                     class="info info_important">Нет пары</div>
             </div>
             <div v-else class="no-lessons">
                 <img src="/img/sunbed.svg"
@@ -106,6 +106,10 @@ export default {
         background-color: $dark-color;
         padding: 30px 15%;
 
+        @media (max-width: 600px) {
+            padding: 30px 5%;
+        }
+
         .label {
             color: $light-transparent-color;
             margin-bottom: 5px;
@@ -128,7 +132,7 @@ export default {
         .time {
             background-color: $accent-color-lightest;
             color: $dark-color;
-            margin-right: 7px;
+            margin-right: 15px;
             font-size: 1.2em;
             font-weight: 500;
             border-radius: 5px;
@@ -137,7 +141,7 @@ export default {
 
         .next-container {
             display: flex;
-            align-items: baseline;
+            align-items: center;
 
             & > * {
                 display: block;
