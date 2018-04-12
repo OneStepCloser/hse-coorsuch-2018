@@ -41,7 +41,7 @@
                         <input v-model="emailFromStorage"
                                @focus="emailIsInputed"
                                class="input"
-                               placeholder="slzakharov@edu.hse.ru"
+                               placeholder="aaivanov@edu.hse.ru"
                                type="email"
                                name="email"
                                autocomplete="on">
@@ -267,6 +267,7 @@ export default {
                 margin-left: 25px;
                 overflow: visible;
                 position: relative;
+                outline: none;
 
                 @media (max-width: 535px) {
                     margin-left: 10px;

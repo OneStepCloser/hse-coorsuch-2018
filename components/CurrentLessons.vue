@@ -107,7 +107,8 @@ export default {
         padding: 30px 15%;
 
         @media (max-width: 600px) {
-            padding: 30px 5%;
+            padding: 15px 5%;
+            font-size: 0.8em;
         }
 
         .label {

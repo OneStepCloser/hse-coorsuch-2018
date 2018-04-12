@@ -6,7 +6,7 @@
             <div class="container">
                 <form @submit.prevent="saveEmail">
                     <input class="input"
-                           placeholder="slzakharov@edu.hse.ru"
+                           placeholder="aaivanov@edu.hse.ru"
                            v-model="inputedEmail"
                            @focus="emailIsInputed"
                            type="email"
