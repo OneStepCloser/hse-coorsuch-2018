@@ -1,5 +1,5 @@
 {
-    "name": "krumedia_frontend",
+    "name": "ko_vtoroi",
     "scripts": {
         "dev": "nuxt",
         "build": "nuxt build",
@@ -42,7 +42,7 @@
     },
     "config": {
         "nuxt": {
-            "host": "192.168.1.222",
+            "host": "0.0.0.0",
             "port": "3333"
         }
     }
