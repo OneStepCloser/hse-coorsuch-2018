@@ -2,8 +2,6 @@ const path = require('path');
 
 const assetsPath = path.join(__dirname, 'assets');
 
-const nodeExternals = require('webpack-node-externals');
-
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
     router: {
         base: '/hse-coorsuch-2018/',
@@ -13,16 +11,9 @@ const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
 module.exports = {
     ...routerBase,
     build: {
-        extend(config, ctx) {
+        extend(config, /* ctx */) {
             config.resolve.alias['/assets'] = assetsPath;
             global.Element = null;
-            if (ctx.isServer) {
-                config.externals = [
-                    nodeExternals({
-                        whitelist: [/^vue2-collapse/],
-                    }),
-                ];
-            }
         },
     },
     head: {
@@ -58,13 +49,8 @@ module.exports = {
         {
             src: '@/nuxt_plugins/ElementUI.js',
         },
-        // {
-        //     src: '@/nuxt_plugins/V-tooltip.js',
-        //     ssr: false,
-        // },
     ],
     modules: [
         '@nuxtjs/axios',
-        '@nuxtjs/font-awesome',
     ],
 };
