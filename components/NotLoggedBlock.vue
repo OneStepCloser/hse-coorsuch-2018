@@ -20,7 +20,7 @@
             <div class="error"
                  :class="{ 'error_visible': invalidEmail }">Введенный e-mail не является корпоративным
             </div>
-            <img src="/img/close.svg"
+            <img :src="require('@/assets/image/icons/close.svg')"
                  class="close clickable"
                  @click="close">
         </div>

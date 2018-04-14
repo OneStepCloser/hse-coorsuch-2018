@@ -1,7 +1,7 @@
 <template>
     <div class="site-header">
         <div class="title-container">
-            <img src="/img/logo2.svg">
+            <img :src="require('@/assets/image/icons/logo2.svg')">
             <h1 class="name">Ко второй</h1>
         </div>
         <div class="menu-container">
@@ -10,13 +10,15 @@
                        active-class="link_active"
                        exact>
                 <span>Расписание</span>
-            <div class="menu-icon menu-icon-schedule"/></nuxt-link>
+                <div class="menu-icon menu-icon-schedule"/>
+            </nuxt-link>
             <nuxt-link class="link"
                        to="/freerooms"
                        active-class="link_active"
                        exact>
                 <span>Свободные аудитории</span>
-            <div class="menu-icon menu-icon-rooms"/></nuxt-link>
+                <div class="menu-icon menu-icon-rooms"/>
+            </nuxt-link>
 
             <div class="avatar clickable tooltip-target"
                  :class="{ 'not-logged': !emailExists }"
@@ -24,7 +26,7 @@
                  v-popover:popover>
                 <span class="initials">{{ initials }}</span>
                 <img class="arrow-down clickable"
-                     src="/img/arrow-down.svg">
+                     :src="require('@/assets/image/icons/arrow-down.svg')">
 
             </div>
 
@@ -162,7 +164,7 @@ export default {
         }
 
         @media (max-width: 600px) {
-        padding: 0 calc(5% + 25px) 0 5%;
+            padding: 0 calc(5% + 25px) 0 5%;
         }
 
         /*@media (max-width: 735px) {*/
@@ -237,11 +239,11 @@ export default {
                     display: none;
 
                     &-schedule {
-                        background-image: url(/img/schedule.svg);
+                        background-image: url(/assets/image/icons/schedule.svg);
                     }
 
                     &-rooms {
-                        background-image: url(/img/door.svg);
+                        background-image: url(/assets/image/icons/door.svg);
                     }
 
                     @media (max-width: 830px) {
@@ -342,7 +344,7 @@ export default {
     }
 
     .not-logged {
-        background-image: url(/img/unknown-user.svg);
+        background-image: url(/assets/image/icons/unknown-user.svg);
         background-size: 60%;
         background-position: 60% 50%;
         background-repeat: no-repeat;

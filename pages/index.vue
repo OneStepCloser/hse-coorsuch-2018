@@ -7,7 +7,7 @@
             <div class="pages-container centered">
                 <a class="link clickable"
                    @click="anotherWeek(false)">
-                    <img src="/img/arrow-left.svg"
+                    <img :src="require('@/assets/image/icons/arrow-left.svg')"
                          class="arrow-left clickable">
                     <span>Предыдущая&nbsp;неделя</span></a>
                 <div class="current-week centered-text">
@@ -17,7 +17,7 @@
                 </div>
                 <a class="link clickable"
                    @click="anotherWeek(true)"><span>Следующая&nbsp;неделя</span>
-                    <img src="/img/arrow-right.svg"
+                    <img :src="require('@/assets/image/icons/arrow-right.svg')"
                          class="arrow-right clickable"></a>
             </div>
 
@@ -258,7 +258,6 @@ export default {
             .current-week {
                 font-size: 1.5em;
                 padding: 0 20px;
-
 
             }
         }

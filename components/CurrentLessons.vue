@@ -15,7 +15,8 @@
                     </div>
                 </div>
                 <div v-else
-                class="info info_important">Нет пары</div>
+                     class="info info_important">Нет пары
+                </div>
 
                 <div class="label">следующая пара:</div>
                 <div class="next-container"
@@ -28,10 +29,12 @@
                     </div>
                 </div>
                 <div v-else
-                     class="info info_important">Нет пары</div>
+                     class="info info_important">Нет пары
+                </div>
             </div>
-            <div v-else class="no-lessons">
-                <img src="/img/sunbed.svg"
+            <div v-else
+                 class="no-lessons">
+                <img :src="require('@/assets/image/icons/sunbed.svg')"
                      class="no-lessons__image"/>
                 <span>Ура, сегодня нет пар! Приятного отдыха!</span>
             </div>

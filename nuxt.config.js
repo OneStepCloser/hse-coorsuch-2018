@@ -1,13 +1,20 @@
-// const ApidocGenerator = require('./nuxt_plugins/apidoc/ApidocGenerator.js');
-// const config = require('dotenv')
-//     .config({ path: '../.env' }).parsed;
+const path = require('path');
+
+const assetsPath = path.join(__dirname, 'assets');
 
 const nodeExternals = require('webpack-node-externals');
 
+const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+    router: {
+        base: '/hse-coorsuch-2018/',
+    },
+} : {};
+
 module.exports = {
-    // env: config,
+    ...routerBase,
     build: {
         extend(config, ctx) {
+            config.resolve.alias['/assets'] = assetsPath;
             global.Element = null;
             if (ctx.isServer) {
                 config.externals = [
