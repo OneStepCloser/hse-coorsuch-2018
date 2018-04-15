@@ -95,7 +95,7 @@ export default {
             emailFromStore: 'email',
         }),
         todayKey() {
-            return dateForRequest(new Date(currentDay));
+            return dateForRequest(currentDay);
         },
     },
     methods: {
@@ -136,7 +136,7 @@ export default {
                 this.loading = false;
             }, 500);
 
-            this.today = new Date(currentDay); // TODO
+            this.today = currentDay; // TODO
             this.monday = getMonday(this.today);
             this.sunday = getSunday(this.today);
             this.week = getWeek(this.monday);
@@ -147,7 +147,7 @@ export default {
 
     },
     created() {
-        this.today = new Date(currentDay); // TODO
+        this.today = currentDay; // TODO
         this.monday = getMonday(this.today);
         this.sunday = getSunday(this.today);
         this.week = getWeek(this.monday);
@@ -155,7 +155,7 @@ export default {
     watch: {
         emailFromStore() {
             // console.log('OLD', oldEmail, 'NEW', newEmail);
-            const today = new Date(currentDay); // TODO
+            const today = currentDay; // TODO
             const monday = getMonday(today);
             const sunday = getSunday(today);
 

@@ -61,7 +61,7 @@ export default {
             storeLoading: 'loading',
         }),
         nearestLessons() {
-            const now = new Date(currentDay);
+            const now = currentDay;
             let indexOfLesson = -1;
             let nextLessonIndex = -1;
             const todayKey = dateForRequest(now);

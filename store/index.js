@@ -74,8 +74,8 @@ const store = () => new Vuex.Store({
             // console.log('INSIDE LOAD EMAIL');
 
             if (process.browser && window.localStorage.kovtoroiEmail) {
-                const monday = dateForRequest(getMonday(new Date(currentDay)));
-                const sunday = dateForRequest(getSunday(new Date(currentDay)));
+                const monday = dateForRequest(getMonday(currentDay));
+                const sunday = dateForRequest(getSunday(currentDay));
                 commit('emailFromLocalStorageLoaded', window.localStorage.kovtoroiEmail);
                 dispatch('loadPersonalSchedule', { fromDate: monday, toDate: sunday })
                     .catch(() => {
