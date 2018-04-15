@@ -1,7 +1,7 @@
+const webpack = require('webpack');
 const path = require('path');
 
 const assetsPath = path.join(__dirname, 'assets');
-
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
     router: {
         base: '/hse-coorsuch-2018/',
@@ -15,6 +15,11 @@ module.exports = {
             config.resolve.alias['/assets'] = assetsPath;
             global.Element = null;
         },
+        plugins: [
+            new webpack.ProvidePlugin({
+                _: 'lodash',
+            }),
+        ],
     },
     head: {
         meta: [
@@ -48,6 +53,9 @@ module.exports = {
     plugins: [
         {
             src: '@/nuxt_plugins/ElementUI.js',
+        },
+        {
+            src: '@/nuxt_plugins/Autocomplete.js',
         },
     ],
     modules: [

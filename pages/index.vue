@@ -2,14 +2,13 @@
     <div class="schedule">
         <h2>Расписание занятий</h2>
 
-
         <div v-if="personalSchedule !== -1">
             <div class="pages-container centered">
                 <a class="link clickable"
                    @click="anotherWeek(false)">
                     <img :src="require('@/assets/image/icons/arrow-left.svg')"
                          class="arrow-left clickable">
-                    <span>Предыдущая&nbsp;неделя</span></a>
+                <span>Предыдущая&nbsp;неделя</span></a>
                 <div class="current-week centered-text">
                     {{ `${addLeadingZeros(monday.getDate())}&nbsp;${monthDict[monday.getMonth()]}&nbsp;${monday.getFullYear()}&nbsp;-
                     ${addLeadingZeros(sunday.getDate())}&nbsp;${monthDict[sunday.getMonth()]}&nbsp;${sunday.getFullYear()}`
@@ -46,6 +45,7 @@
                 color="#836a9b"/>
             <span>Немного терпения...</span>
         </div>
+
     </div>
 </template>
 
@@ -55,7 +55,7 @@ import { getMonday, getWeek, getSunday, dateForRequest, addLeadingZeros, getPers
 import ScheduleTable from '~/components/ScheduleTable';
 import { LoopingRhombusesSpinner } from '~/node_modules/epic-spinners';
 import { currentDay } from '~/assets/js/static_data';
-import _ from '~/node_modules/lodash';
+
 
 export default {
 
@@ -85,6 +85,7 @@ export default {
             isDefault: true,
             nonDefaultSchedule: {},
             loading: false,
+
         };
     },
     computed: {
@@ -186,8 +187,6 @@ export default {
                     }
                     this.loading = false;
                 });
-
-
         },
     },
     components: { ScheduleTable, LoopingRhombusesSpinner },

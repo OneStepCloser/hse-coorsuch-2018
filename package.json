@@ -17,7 +17,10 @@
         "node-sass": "^4.7.2",
         "normalize.css": "^7.0.0",
         "nuxt": "^1.4.0",
-        "sass-loader": "^6.0.6"
+        "sass-loader": "^6.0.6",
+        "vue-multiselect": "^2.1.0",
+        "vue-select": "^2.4.0",
+        "vue-simple-suggest": "^1.6.1"
     },
     "devDependencies": {
         "babel-eslint": "^8.2.1",

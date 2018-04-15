@@ -1,7 +1,6 @@
 import Vue from '~/node_modules/vue';
 import Vuex from '~/node_modules/vuex';
 import { getRequest, getFreeRooms, getPersonalSchedule, getSunday, getMonday, dateForRequest } from '~/assets/js/utils';
-import _ from '~/node_modules/lodash';
 import { currentDay } from '~/assets/js/static_data';
 
 Vue.use(Vuex);

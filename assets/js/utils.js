@@ -1,5 +1,4 @@
-const axios = require('axios');
-import _ from '~/node_modules/lodash';
+import axios from 'axios';
 
 const yqlUrl = 'https://query.yahooapis.com/v1/public/yql';
 
@@ -20,7 +19,10 @@ function getRequest(url, params) {
     let paramsString = '';
 
     if (params) {
-        Object.keys(params).map(key => paramsString += `${key}=${params[key]}&`);
+        _.forEach(Object.keys(params), (key) => {
+            paramsString += `${key}=${params[key]}&`;
+        });
+        // Object.keys(params).map(key => paramsString += `${key}=${params[key]}&`);
     }
 
     return axios.get(yqlUrl, {
@@ -59,7 +61,9 @@ function getFreeRooms(date, buildingId, pairNumber) {
                     }
 
                     const lessons = response.data.query.results.json.json || response.data.query.results.json;
-                    if (lessons.some(lesson => isIntersected(neededLessonAtTable, lesson))) { return null; }
+                    if (lessons.some(lesson => isIntersected(neededLessonAtTable, lesson))) {
+                        return null;
+                    }
                     return { number: aud.number, type: aud.typeOfAuditorium };
                 }));
 

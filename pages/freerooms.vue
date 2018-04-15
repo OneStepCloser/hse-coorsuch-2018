@@ -1,19 +1,27 @@
 <template>
     <div class="freerooms">
         <div class="container">
-            <el-select v-model="buildingId"
-                       placeholder="Введите или выберите адрес корпуса"
-                       class="select"
-                       :class="{ 'select_skipped': !buildingIsChosen }"
-                       filterable
-                       clearable
-                       @focus="buildingIsInputing">
-                <el-option
-                    v-for="building in buildings"
-                    :key="building.buildingOid"
-                    :value="building.buildingOid"
-                    :label="building.address"/>
-            </el-select>
+            <multiselect v-model="chosenBuilding"
+                         :options="buildings"
+                         :label="'address'"
+                         placeholder="Введите или выберите адрес корпуса"
+                         @input="buildingIsInputing"
+                         :class="{ 'select_skipped': !buildingIsChosen }"
+                         class="select"
+            />
+            <!--<el-select v-model="buildingId"-->
+            <!--placeholder="Введите или выберите адрес корпуса"-->
+            <!--class="select"-->
+            <!--:class="{ 'select_skipped': !buildingIsChosen }"-->
+            <!--filterable-->
+            <!--clearable-->
+            <!--@focus="buildingIsInputing">-->
+            <!--<el-option-->
+            <!--v-for="building in buildings"-->
+            <!--:key="building.buildingOid"-->
+            <!--:value="building.buildingOid"-->
+            <!--:label="building.address"/>-->
+            <!--</el-select>-->
             <div class="error centered-text"
                  :class="{ 'error_visible': !buildingIsChosen }">Вы забыли ввести корпус!
             </div>
@@ -88,10 +96,23 @@ export default {
                 { label: '7 пара (18:10 - 19:30)', startHour: 18, startMinute: 0, endHour: 19, endMinute: 30 },
                 { label: '8 пара (19:40 - 21:00)', startHour: 19, startMinute: 30, endHour: 21, endMinute: 0 },
             ],
+            selected: '',
 
         };
     },
     computed: {
+        chosenBuilding: {
+            get() {
+                return _.find(this.buildings, ({ buildingOid }) => buildingOid === this.buildingId);
+            },
+            set(val) {
+                if (val && val.buildingOid !== undefined) {
+                    this.buildingId = val.buildingOid;
+                } else {
+                    this.buildingId = '';
+                }
+            },
+        },
         ...mapGetters({
             buildings: 'getBuildings',
             freeRooms: 'freeRooms',
@@ -142,7 +163,6 @@ export default {
         belongsToLesson(lesson, targetMoment) {
             const start = new Date();
             const end = new Date();
-            // console.log(lesson.startHour, lesson.startMinute, lesson.endHour, lesson.endMinute);
             start.setHours(lesson.startHour);
             start.setMinutes(lesson.startMinute);
             end.setHours(lesson.endHour);
@@ -182,6 +202,61 @@ export default {
         border-radius: 50%;
         color: $text-color-light !important;
     }
+
+    .multiselect {
+        @media (max-width: 660px) {
+            width: unset;
+        }
+    }
+
+    .multiselect__tags {
+        border-color: #dbdde6;
+        padding-left: 10px;
+
+    }
+
+    .multiselect__single {
+        //color: #c0c4cc;
+
+    }
+
+    .multiselect--active {
+        .multiselect__select {
+            transform: rotate(0deg);
+        }
+
+        .multiselect__tags {
+            border-color: $accent-color;
+        }
+    }
+
+    .multiselect__option::after {
+        display: none;
+    }
+
+    .multiselect__option--highlight {
+        background-color: $accent-color;
+        &.multiselect__option--selected {
+            background-color: $attention-color;
+        }
+    }
+
+    .multiselect__select {
+        padding-right: 0;
+        padding-left: 0;
+        width: 25px;
+        margin-right: 5px;
+        transform: rotate(180deg);
+        &::before {
+            color: #c0c4cc;
+            content: "\E605";
+            font-family: 'element-icons' !important;
+            border: none;
+            top: 6px;
+            font-size: 14px;
+        }
+    }
+
 </style>
 
 <style lang="scss" scoped>
@@ -213,6 +288,7 @@ export default {
                 flex-grow: 1;
                 flex-basis: 100%;
 
+
                 &_skipped {
                     margin-bottom: 2px;
                 }
@@ -227,7 +303,6 @@ export default {
                     width: calc(100% - 20px);
                 }
             }
-
 
             .go-button {
                 padding: 10px 15px;
