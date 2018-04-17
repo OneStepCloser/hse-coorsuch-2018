@@ -2,11 +2,11 @@
     <div class="site-footer">
         <div class="title centered-text">Поделиться</div>
         <div class="socnets-container">
-            <a href="http://vk.com/share.php?url=https://onestepcloser.github.io/fintech-coorsuch/&title=Ко второй - расписание занятий и свободные аудитории в корпусах НИУ ВШЭ&description=«Ко второй» покажет расписание занятий а также поможет найти место для того, чтобы спокойно поботать во время окна, переждать скучную лекцию или провести консультацию умного одногруппника&image=https://github.com/OneStepCloser/fintech-coorsuch/blob/master/public/images/soc-network.jpg?raw=true&noparse=true">
+            <a href="http://vk.com/share.php?url=https://onestepcloser.github.io/hse-coorsuch-2018/&title=Ко второй - расписание занятий и свободные аудитории в корпусах НИУ ВШЭ&description=«Ко второй» покажет расписание занятий а также поможет найти место для того, чтобы спокойно поботать во время окна, переждать скучную лекцию или провести консультацию умного одногруппника&image=https://github.com/OneStepCloser/fintech-coorsuch/blob/master/public/images/soc-network.jpg?raw=true&noparse=true">
                 <img class="icon clickable"
                      :src="require('@/assets/image/icons/vk.svg')">
             </a>
-            <a href="https://telegram.me/share/url?url=https://onestepcloser.github.io/&text=Ко второй - расписание занятий и свободные аудитории в корпусах НИУ ВШЭ">
+            <a href="https://telegram.me/share/url?url=https://onestepcloser.github.io/hse-coorsuch-2018/&text=Ко второй - расписание занятий и свободные аудитории в корпусах НИУ ВШЭ">
                 <img class="icon clickable"
                      :src="require('@/assets/image/icons/tg.svg')">
             </a>

@@ -29,12 +29,8 @@ module.exports = {
                 content: 'width=device-width, initial-scale=1',
             },
             {
-                rel: 'favicon',
-                href: 'favicon.ico',
-            },
-            {
                 property: 'og:url',
-                content: 'https://onestepcloser.github.io/fintech-coorsuch/',
+                content: 'https://onestepcloser.github.io/hse-coorsuch-2018/',
             },
             {
                 property: 'og:title',
@@ -46,7 +42,7 @@ module.exports = {
             },
             {
                 property: 'og:image',
-                content: 'https://github.com/OneStepCloser/fintech-coorsuch/blob/master/public/images/soc-network.jpg?raw=true',
+                content: 'http://uz24.uz/userfiles/images/182280_205984_hannah-belleza-goriz.jpg',
             },
         ],
     },
