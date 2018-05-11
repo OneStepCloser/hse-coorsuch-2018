@@ -65,7 +65,6 @@ export default {
             let indexOfLesson = -1;
             let nextLessonIndex = -1;
             const todayKey = dateForRequest(now);
-            // console.log('TODAY KEY', todayKey);
 
             if (!this.personalSchedule.hasOwnProperty(todayKey)) {
                 return null;
@@ -74,9 +73,9 @@ export default {
             const currentDaySchedule = this.personalSchedule[todayKey];
 
             for (let i = 0; i < currentDaySchedule.length; ++i) {
-                // console.log(`${todayKey} ${currentDaySchedule[i].beginLesson}`);
-                const begin = new Date(`${todayKey.split('.').join('-')}T${currentDaySchedule[i].beginLesson}`);
-                const end = new Date(`${todayKey.split('.').join('-')}T${currentDaySchedule[i].endLesson}`);
+
+                const begin = new Date(`${todayKey.split('.').join('-')}T${currentDaySchedule[i].beginLesson}+03:00`);
+                const end = new Date(`${todayKey.split('.').join('-')}T${currentDaySchedule[i].endLesson}+03:00`);
 
                 // searching only if current lesson is not found yet
                 if (indexOfLesson === -1 && begin.getTime() <= now.getTime() && now.getTime() <= end.getTime()) {

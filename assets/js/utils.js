@@ -43,7 +43,7 @@ function getFreeRooms(date, buildingId, pairNumber) {
     const neededLessonAtTable = lessonsOrder[pairNumber - 1];
     return getRequest('http://ruz.hse.ru/ruzservice.svc/auditoriums', { buildingOid: buildingId })
         .then((response) => {
-            let auditoriums = response.data.query.results.json.json;
+            let auditoriums = (response.data.query.results && response.data.query.results.json.json) || [];
             if (!auditoriums) {
                 return auditoriums;
             }
