@@ -11,7 +11,7 @@ const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
 module.exports = {
     ...routerBase,
     build: {
-        extend(config, /* ctx */) {
+        extend(config /* , ctx */) {
             config.resolve.alias['/assets'] = assetsPath;
             global.Element = null;
         },
@@ -56,5 +56,12 @@ module.exports = {
     ],
     modules: [
         '@nuxtjs/axios',
+        ['@nuxtjs/yandex-metrika', {
+            id: '48823934',
+            webvisor: true,
+            clickmap: true,
+            useCDN: true,
+            trackLinks: true,
+        }],
     ],
 };
