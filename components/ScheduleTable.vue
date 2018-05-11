@@ -89,7 +89,7 @@ export default {
         },
     },
     created() {
-        console.log('lolkek', this.personalSchedule);
+        // console.log('lolkek', this.personalSchedule);
     },
 };
 </script>

@@ -69,7 +69,7 @@ function getFreeRooms(date, buildingId, pairNumber) {
 
             return Promise.all(arrayOfRequests);
         }).then((arrayOfAudNumbers) => {
-            console.log('NEW', arrayOfAudNumbers);
+            // console.log('NEW', arrayOfAudNumbers);
             if (!arrayOfAudNumbers) {
                 return arrayOfAudNumbers;
             }

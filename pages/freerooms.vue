@@ -28,9 +28,10 @@
             <el-date-picker
                 v-model="date"
                 type="date"
-                placeholder="Pick a day"
+                placeholder="Выберите день"
                 format="dd.MM.yyyy"
-                class="date-field"/>
+                class="date-field"
+                :picker-options="pickerOptions"/>
             <el-select v-model="lessonNumber"
                        placeholder="Номер пары"
                        class="lesson-field">
@@ -97,7 +98,9 @@ export default {
                 { label: '8 пара (19:40 - 21:00)', startHour: 19, startMinute: 30, endHour: 21, endMinute: 0 },
             ],
             selected: '',
-
+            pickerOptions: {
+                firstDayOfWeek: 1,
+            },
         };
     },
     computed: {
@@ -134,7 +137,7 @@ export default {
             if (process.browser) {
                 window.localStorage.setItem('kovtoroiBuilding', this.buildingId);
             }
-            console.log('BUILDING', this.buildingId);
+            // console.log('BUILDING', this.buildingId);
             this.loading = true;
             // console.log('LOADING1', this.loading);
             this.$store.dispatch('loadFreeRooms', { date: dateForRequest(this.date), buildingId: this.buildingId, lessonNumber: this.lessonNumber })
@@ -287,7 +290,6 @@ export default {
             .select {
                 flex-grow: 1;
                 flex-basis: 100%;
-
 
                 &_skipped {
                     margin-bottom: 2px;

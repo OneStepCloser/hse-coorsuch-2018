@@ -25,7 +25,7 @@ export default {
     created() {
         this.$store.dispatch('loadBuildings')
             .then(() => {
-                console.log('OK');
+                // console.log('OK');
             })
             .catch((error) => {
                 console.log(error);
