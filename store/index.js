@@ -79,7 +79,7 @@ const store = () => new Vuex.Store({
                 commit('emailFromLocalStorageLoaded', window.localStorage.kovtoroiEmail);
                 dispatch('loadPersonalSchedule', { fromDate: monday, toDate: sunday })
                     .catch(() => {
-                        console.log('ппц нет такого мейла', state.email);
+                        // console.log('ппц нет такого мейла', state.email);
                     });
             }
         },
@@ -89,12 +89,12 @@ const store = () => new Vuex.Store({
             }
         },
         loadPersonalSchedule({ commit, state }, { fromDate, toDate }) {
-            console.log('LOAD PERSONAL SCHEDULE', fromDate, toDate, state.email);
+            // console.log('LOAD PERSONAL SCHEDULE', fromDate, toDate, state.email);
             state.loading = true;
             // console.log('LOADING 1', state.loading);
             return getPersonalSchedule(fromDate, toDate, state.email)
                 .then((response) => {
-                    console.log('RESPONSE', response)
+                    console.log('RESPONSE', response);
 
                     if (response.data.query.results === null) {
                         commit('personalScheduleLoaded', {});
@@ -114,12 +114,11 @@ const store = () => new Vuex.Store({
         },
         emailFromLocalStorageLoaded(state, email) {
             state.email = email;
-            console.log('EMAIL LOADED');
+            // console.log('EMAIL LOADED');
         },
         personalScheduleLoaded(state, schedule) {
             state.personalSchedule = schedule;
             state.loading = false;
-            // console.log('LOADING 2', state.loading);
         },
         preferedBuildingLoaded(state, buildingId) {
             state.preferedBuilding = buildingId;
