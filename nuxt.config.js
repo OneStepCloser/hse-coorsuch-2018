@@ -30,7 +30,8 @@ module.exports = {
             },
             {
                 property: 'og:url',
-                content: 'https://onestepcloser.github.io/hse-coorsuch-2018/',
+                // content: 'https://onestepcloser.github.io/hse-coorsuch-2018/',
+                content: 'http://kovtoroy.ru',
             },
             {
                 property: 'og:title',
