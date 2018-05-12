@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-show="!emailExists && show"
+        <div v-show="shouldBeShown"
              class="not-logged centered-text">
             <div class="text">Чтобы наш сервис был ещё удобнее, введите адрес корпоративной почты</div>
             <div class="container">
@@ -30,6 +30,7 @@
 <script>
 import { checkEmail } from '~/assets/js/utils';
 import { mapGetters } from '~/node_modules/vuex';
+import { sendReachGoal } from '~/nuxt_plugins/YandexMetrika/ABtest';
 
 export default {
     name: 'NotLoggedBlock',
@@ -37,7 +38,7 @@ export default {
         return {
             email: '',
             invalidEmail: false,
-            show: true,
+            show: false,
         };
     },
     computed: {
@@ -53,12 +54,16 @@ export default {
             emailFromStore: 'email',
             emailExists: 'emailExists',
         }),
+        shouldBeShown() {
+            return !this.emailExists && this.show && this.$store.getters.notificationToFillEmailCanBeShown;
+        },
     },
     methods: {
         saveEmail() {
             if (process.browser) {
                 if (checkEmail(this.email)) {
                     window.localStorage.setItem('kovtoroiEmail', this.email);
+                    sendReachGoal(this);
                     this.$store.dispatch('loadEmailFromLocalStorage');
 
 
@@ -75,7 +80,9 @@ export default {
         },
 
     },
-
+    mounted() {
+        this.show = true;
+    },
 };
 
 </script>

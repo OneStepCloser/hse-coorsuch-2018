@@ -53,15 +53,12 @@ module.exports = {
         {
             src: '@/nuxt_plugins/Autocomplete.js',
         },
+        {
+            src: '@/nuxt_plugins/YandexMetrika/index.js',
+            ssr: false,
+        },
     ],
     modules: [
         '@nuxtjs/axios',
-        ['@nuxtjs/yandex-metrika', {
-            id: '48823934',
-            webvisor: true,
-            clickmap: true,
-            useCDN: true,
-            trackLinks: true,
-        }],
     ],
 };

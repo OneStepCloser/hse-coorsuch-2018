@@ -66,6 +66,7 @@
 <script>
 import { checkEmail } from '~/assets/js/utils';
 import { mapGetters } from '~/node_modules/vuex';
+import { sendReachGoal } from '~/nuxt_plugins/YandexMetrika/ABtest';
 
 export default {
     name: 'SiteHeader',
@@ -98,6 +99,7 @@ export default {
             if (process.browser) {
                 if (checkEmail(this.email)) {
                     window.localStorage.setItem('kovtoroiEmail', this.email);
+                    sendReachGoal(this);
                     this.$store.dispatch('loadEmailFromLocalStorage');
                     this.showPopover = false;
                 } else {

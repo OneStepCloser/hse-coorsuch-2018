@@ -20,7 +20,8 @@
         "nuxt": "^1.4.0",
         "sass-loader": "^6.0.6",
         "vue-multiselect": "^2.1.0",
-        "vue-simple-suggest": "^1.6.1"
+        "vue-simple-suggest": "^1.6.1",
+        "vue-yandex-metrika": "^1.6.1"
     },
     "devDependencies": {
         "babel-eslint": "^8.2.1",

@@ -20,6 +20,7 @@ const store = () => new Vuex.Store({
         personalSchedule: -1,
         loading: false,
         preferedBuilding: -1,
+        notificationToFillEmailCanBeShown: false,
     },
     getters: {
         getBuildings: state => state.buildings,
@@ -32,6 +33,7 @@ const store = () => new Vuex.Store({
         personalSchedule: state => state.personalSchedule,
         loading: state => state.loading,
         preferedBuilding: state => state.preferedBuilding,
+        notificationToFillEmailCanBeShown: state => state.notificationToFillEmailCanBeShown,
     },
     actions: {
         loadBuildings({ commit, state }) {
@@ -122,6 +124,9 @@ const store = () => new Vuex.Store({
         },
         preferedBuildingLoaded(state, buildingId) {
             state.preferedBuilding = buildingId;
+        },
+        setNotificationToFillEmailCanBeShown(state, newVal) {
+            state.notificationToFillEmailCanBeShown = !!newVal;
         },
     },
 });
