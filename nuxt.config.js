@@ -29,6 +29,14 @@ module.exports = {
                 content: 'width=device-width, initial-scale=1',
             },
             {
+                name: 'msapplication-TileColor',
+                content: '#5bbad5',
+            },
+            {
+                name: 'theme-color',
+                content: '#5bbad5',
+            },
+            {
                 property: 'og:url',
                 // content: 'https://onestepcloser.github.io/hse-coorsuch-2018/',
                 content: 'http://kovtoroy.ru',
@@ -45,6 +53,13 @@ module.exports = {
                 property: 'og:image',
                 content: 'http://uz24.uz/userfiles/images/182280_205984_hannah-belleza-goriz.jpg',
             },
+        ],
+        link: [
+            { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+            { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+            { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+            { rel: 'manifest', href: '/site.webmanifest' },
+            { rel: 'mask-icon', href: '/favicons/safari-pinned-tab.svg', color: '#5bbad5' },
         ],
     },
     plugins: [
