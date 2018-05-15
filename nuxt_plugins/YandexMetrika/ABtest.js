@@ -22,7 +22,9 @@ function kek(store) {
 }
 
 function sendReachGoal(vueInstance) {
-    vueInstance.$metrika.reachGoal('emailEnteredSuccesfully');
+    if (vueInstance && vueInstance.$metrika) {
+        vueInstance.$metrika.reachGoal('emailEnteredSuccesfully');
+    }
 }
 
 
