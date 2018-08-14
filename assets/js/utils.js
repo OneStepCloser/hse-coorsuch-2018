@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+const API_HOST = 'http://ruz2018.hse.ru';
+
 const yqlUrl = 'https://query.yahooapis.com/v1/public/yql';
 
-const personalLessonsUrl = 'http://ruz.hse.ru/ruzservice.svc/personlessons';
+const personalLessonsUrl = `${API_HOST}/ruzservice.svc/personlessons`;
 
 const lessonsOrder = [
     { begin: '09:00', end: '10:20' },
@@ -41,7 +43,7 @@ function isIntersected(lessonFromTable, lessonAtAuditorium) {
 
 function getFreeRooms(date, buildingId, pairNumber) {
     const neededLessonAtTable = lessonsOrder[pairNumber - 1];
-    return getRequest('http://ruz.hse.ru/ruzservice.svc/auditoriums', { buildingOid: buildingId })
+    return getRequest(`${API_HOST}/ruzservice.svc/auditoriums`, { buildingOid: buildingId })
         .then((response) => {
             let auditoriums = (response.data.query.results && response.data.query.results.json.json) || [];
             if (!auditoriums) {
@@ -51,7 +53,7 @@ function getFreeRooms(date, buildingId, pairNumber) {
                 (auditorium.typeOfAuditorium !== 'Кабинет преподавателя'));
 
             const arrayOfRequests = auditoriums.map(aud =>
-                getRequest('http://ruz.hse.ru/ruzservice.svc/lessons', {
+                getRequest(`${API_HOST}/ruzservice.svc/lessons`, {
                     fromdate: date,
                     todate: date,
                     auditoriumoid: aud.auditoriumOid,
@@ -143,4 +145,5 @@ export {
     getMonday,
     getSunday,
     getWeek,
+    API_HOST,
 };

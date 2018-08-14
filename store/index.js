@@ -1,11 +1,19 @@
 import Vue from '~/node_modules/vue';
 import Vuex from '~/node_modules/vuex';
-import { getRequest, getFreeRooms, getPersonalSchedule, getSunday, getMonday, dateForRequest } from '~/assets/js/utils';
+import {
+    getRequest,
+    getFreeRooms,
+    getPersonalSchedule,
+    getSunday,
+    getMonday,
+    dateForRequest,
+    API_HOST,
+} from '~/assets/js/utils';
 import { currentDay } from '~/assets/js/static_data';
 
 Vue.use(Vuex);
 
-const buildingsUrl = 'http://ruz.hse.ru/ruzservice.svc/buildings';
+const buildingsUrl = `${API_HOST}/ruzservice.svc/buildings`;
 // const personalLessonsUrl = 'http://ruz.hse.ru/ruzservice.svc/personlessons';
 
 const store = () => new Vuex.Store({
