@@ -52,7 +52,7 @@ const store = () => new Vuex.Store({
             return getRequest(buildingsUrl)
                 .then((response) => {
                     // console.log('loooool', response);
-                    answer = response.data.query.results.json.json;
+                    answer = response.data;
                 })
                 .then(() => {
                     answer = answer.filter(item => !(
@@ -77,7 +77,7 @@ const store = () => new Vuex.Store({
                     commit('freeRoomsLoaded', response);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    // console.log(error);
                 });
         },
         loadEmailFromLocalStorage({ dispatch, commit, state }) {
@@ -89,7 +89,8 @@ const store = () => new Vuex.Store({
                 const sunday = dateForRequest(getSunday(currentDay));
                 commit('emailFromLocalStorageLoaded', window.localStorage.kovtoroiEmail);
                 dispatch('loadPersonalSchedule', { fromDate: monday, toDate: sunday })
-                    .catch(() => {
+                    .catch((err) => {
+                        // console.log('ERR', err)
                         // console.log('ппц нет такого мейла', state.email);
                     });
             }
@@ -107,12 +108,16 @@ const store = () => new Vuex.Store({
                 .then((response) => {
                     // console.log('RESPONSE', response);
 
-                    if (response.data.query.results === null) {
+                    if (!response.data) {
                         commit('personalScheduleLoaded', {});
                     } else {
-                        commit('personalScheduleLoaded', _.groupBy(response.data.query.results.json.json, lesson => lesson.date));
+                        commit('personalScheduleLoaded', _.groupBy(response.data, lesson => lesson.date));
                     }
-                    // console.log(response.data.query.results.json.json);
+                    // console.log(response.data);
+                })
+                .catch((err) => {
+                    commit('personalScheduleLoaded', {});
+                    return Promise.reject(err);
                 });
         },
     },

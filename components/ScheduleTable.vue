@@ -18,6 +18,7 @@
                 <tbody>
                     <tr v-if="!personalSchedule.hasOwnProperty(dateForRequest(day))">
                         <td class="no-lessons"
+                            :class="{ 'today-row': today === dateForRequest(day)}"
                             colspan="3">Занятий нет
                         </td>
                     </tr>

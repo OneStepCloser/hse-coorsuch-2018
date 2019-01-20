@@ -55,7 +55,8 @@ export default {
             emailExists: 'emailExists',
         }),
         shouldBeShown() {
-            return !this.emailExists && this.show && this.$store.getters.notificationToFillEmailCanBeShown;
+            return !this.emailExists && this.show;
+            // return !this.emailExists && this.show && this.$store.getters.notificationToFillEmailCanBeShown;
         },
     },
     methods: {

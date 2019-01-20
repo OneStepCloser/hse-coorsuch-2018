@@ -12,9 +12,9 @@ export default ({ app: { router }, store }/* , inject */) => {
             webvisor: true,
             clickmap: true,
             trackLinks: true,
-            params: {
-                [abTestParamKey]: genABTestParam(store),
-            },
+            // params: {
+            //     [abTestParamKey]: genABTestParam(store),
+            // },
         },
     });
 };

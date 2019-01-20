@@ -27,13 +27,12 @@ function getRequest(url, params) {
         // Object.keys(params).map(key => paramsString += `${key}=${params[key]}&`);
     }
 
-    return axios.get(yqlUrl, {
-        params: {
-            q: `SELECT * FROM json WHERE url="${url}?${paramsString}"`,
-            format: 'json',
-            jsonCompat: 'new',
-        },
-    }, { responseType: 'jsonp' });
+    const queryString = `https://cors-anywhere.herokuapp.com/${url}?${paramsString}`
+
+    return axios.get(queryString)
+        // .then((resp) => {
+        //     console.log('GET', resp);
+        // });
 }
 
 function isIntersected(lessonFromTable, lessonAtAuditorium) {
@@ -45,7 +44,7 @@ function getFreeRooms(date, buildingId, pairNumber) {
     const neededLessonAtTable = lessonsOrder[pairNumber - 1];
     return getRequest(`${API_HOST}/ruzservice.svc/auditoriums`, { buildingOid: buildingId })
         .then((response) => {
-            let auditoriums = (response.data.query.results && response.data.query.results.json.json) || [];
+            let auditoriums = (response.data) || [];
             if (!auditoriums) {
                 return auditoriums;
             }
@@ -58,11 +57,11 @@ function getFreeRooms(date, buildingId, pairNumber) {
                     todate: date,
                     auditoriumoid: aud.auditoriumOid,
                 }).then((response) => {
-                    if (!response.data.query.results) {
+                    if (!response.data) {
                         return { number: aud.number, type: aud.typeOfAuditorium };
                     }
 
-                    const lessons = response.data.query.results.json.json || response.data.query.results.json;
+                    const lessons = response.data;
                     if (lessons.some(lesson => isIntersected(neededLessonAtTable, lesson))) {
                         return null;
                     }
@@ -79,7 +78,7 @@ function getFreeRooms(date, buildingId, pairNumber) {
             return arrayOfAudNumbers;
         })
         .catch((error) => {
-            console.log(error);
+            // console.log(error);
         });
 }
 

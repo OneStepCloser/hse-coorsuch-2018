@@ -115,11 +115,11 @@ export default {
 
             getPersonalSchedule(this.dateForRequest(this.monday), this.dateForRequest(this.sunday), this.$store.getters.email)
                 .then((response) => {
-                    if (response.data.query.results === null) {
+                    if (!response.data) {
                         this.nonDefaultSchedule = {};
                     } else {
                         this.nonDefaultSchedule = _.groupBy(
-                            response.data.query.results.json.json,
+                            response.data,
                             lesson => lesson.date,
                         );
                     }
@@ -127,7 +127,7 @@ export default {
                     this.loading = false;
                 })
                 .catch((error) => {
-                    console.log('ERROR', error);
+                    // console.log('ERROR', error);
                 });
         },
         goToCurrentWeek() {
@@ -170,21 +170,24 @@ export default {
                             this.$store.getters.email,
                         ) // TODO handle wrong email
                             .then((response) => {
-                                if (response.data.query.results === null) {
+                                if (!response.data) {
                                     this.nonDefaultSchedule = {}; // no lessons, return empty object
                                 } else {
                                     this.nonDefaultSchedule = _.groupBy(
-                                        response.data.query.results.json.json,
+                                        response.data,
                                         lesson => lesson.date,
                                     );
                                 }
-
                                 this.loading = false;
                             })
                             .catch((error) => {
-                                console.log('ERROR', error);
+                                // this.nonDefaultSchedule = {};
+                                // this.loading = false;
                             });
                     }
+                    this.loading = false;
+                })
+                .catch((error) => {
                     this.loading = false;
                 });
         },
